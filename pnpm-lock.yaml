@@ -4,7 +4,7 @@ importers:
 
   .:
     devDependencies:
-      '@monorepo-demo/utils':
+      '@crawler-manage-share/utils':
         specifier: workspace:*
         version: link:share/utils
       '@typescript-eslint/eslint-plugin':
