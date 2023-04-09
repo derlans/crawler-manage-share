@@ -11,8 +11,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:vue": "pnpm -r --parallel --dir=packages/vue run dev",
-    "dev:nest": "pnpm -r --parallel --dir=packages/nest run start:dev"
+    "dev:foreend": "pnpm -r --parallel --dir=packages/foreend run dev",
+    "dev:server": "pnpm -r --parallel --dir=packages/server run start:dev"
   },
   "keywords": [],
   "author": "",
