@@ -31,6 +31,8 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "../../share/**/*.ts", 
+    "./config/auto-imports.d.ts", 
+    "./config/components.d.ts"
   ],
   "references": [
     {

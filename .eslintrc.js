@@ -10,6 +10,7 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'standard-with-typescript',
     'plugin:prettier/recommended',
+    './packages/foreend/config/.eslintrc-auto-import.json',
   ],
   overrides: [],
   parserOptions: {
