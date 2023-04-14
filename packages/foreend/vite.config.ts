@@ -24,7 +24,6 @@ export default defineConfig((configEnv) => {
     resolve: {
       alias: {
         '@': resolve(__dirname, './src/'),
-        share: resolve(__dirname, '../../share'),
       },
     },
   }

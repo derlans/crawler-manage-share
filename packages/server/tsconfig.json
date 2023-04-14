@@ -13,9 +13,6 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "share/*":[
-        "../../share/*"
       ]
     },  
     "incremental": true,
@@ -26,5 +23,5 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
   },
-  "include": ["**/*.ts", "../../share", ]
+  "include": ["**/*.ts" ]
 }
