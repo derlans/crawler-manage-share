@@ -3,32 +3,46 @@
     <div class="w-[80vw] h-[50vh] text-left">
       <n-input
         v-model:value="value"
-        :rows="20"
+        :rows="15"
         type="textarea"
         placeholder="基本的 Textarea"
       />
+      <n-input-number v-model:value="range.start" />
+      <n-input-number v-model:value="range.end" />
     </div>
-    <n-input v-model:value="userParams.q">q</n-input>
-    <n-input-number v-model:value="userParams.page">page</n-input-number>
+    <VueForm v-model="userParams" :schema="schema"></VueForm>
     <n-button @click="run">点击执行</n-button>
   </div>
 </template>
 
 <script lang="ts" setup>
 import axios from 'axios'
-const fn = `function fccc({axios},{q,page}){
+import { Crawler, FnString, generateParams } from '@crawler-manage-share/utils'
+import VueForm from '@lljj/vue3-form-naive'
+const fn = `async function fccc({axios},{q,page}){
   axios
   .get('https://m.weibo.cn/api//container/getIndex', {
     params: {
       containerid: '100103type=1&q='+q,
       page_type: 'searchall',
       page: page,
-    },
-  })  
+    }, 
+  })
   .then((res) => {
-    console.log(res.data.data.cards)
+    console.log(res.data.data,page)
   })
 }`
+
+const schema = {
+  type: 'object',
+  required: [],
+  properties: {
+    q: {
+      type: 'string',
+    },
+  },
+}
+const range = ref({ start: 0, end: 0 })
 const value = ref(fn)
 const envParams = {
   axios,
@@ -38,13 +52,15 @@ const userParams = ref({
   page: 0,
 })
 
+const allUserParams = computed(() =>
+  generateParams({
+    range: range.value,
+    rawParams: userParams.value,
+  }),
+)
 const run = () => {
-  for (let i = 1; i < 2; i++) {
-    userParams.value.page = i
-    const test = `return ${fn}`
-    const aaa = Function(test)()
-    aaa(envParams, userParams)
-  }
+  const crawler = new Crawler(value.value as FnString, { envParams })
+  crawler.run({ concurrency: 20, allUserParams: allUserParams.value })
 }
 
 const key = ref(1)

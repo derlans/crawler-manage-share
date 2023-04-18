@@ -7,6 +7,7 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import vue from '@vitejs/plugin-vue'
 import pkg from '../package.json'
 import { rmSync } from 'node:fs'
+import { resolve } from 'path'
 export default ({ command, mode }: ConfigEnv): UserConfig['plugins'] => {
   const isServe = command === 'serve'
   const isBuild = command === 'build'
@@ -89,6 +90,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig['plugins'] => {
             minify: isBuild,
             outDir: 'dist-electron/preload',
             rollupOptions: {
+              // input: resolve(__dirname, 'electron-index.html'),
               external: Object.keys(
                 'dependencies' in pkg ? pkg.dependencies : {},
               ),

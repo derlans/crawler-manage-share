@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lljj/vue3-form-naive": "^1.14.2",
     "axios": "^1.3.5",
     "naive-ui": "^2.34.3",
     "unplugin-auto-import": "^0.15.2",

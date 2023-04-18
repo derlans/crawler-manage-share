@@ -4,15 +4,16 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build"
+    "build": "vite build",
+    "build:watch": "vite build --watch"
   },
   "main": "./dist/index.cjs.js", 
-  "module": "./dist/index.mjs.js",
+  "module": "./dist/index.es.js",
   "types": "index.ts", 
   "exports": {
     ".": {
       "require": "./dist/index.cjs.js",
-      "import": "./dist/index.mjs.js",
+      "import": "./dist/index.es.js",
       "types": "./index.ts"
     }
   },

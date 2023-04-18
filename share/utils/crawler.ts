@@ -94,4 +94,30 @@ export class Crawler {
 export const turnFnStringToFn = (fnString: FnString): Function => {
   return Function(`return ${fnString}`)()
 }
-export const createCrawler = () => {}
+
+// 生成参数
+export interface GenerateParamsOpations {
+  rawParams: Record<string, any>
+  range: {
+    start: number
+    end: number
+  }
+}
+export const generateParams = (opations: GenerateParamsOpations) => {
+  const { rawParams, range } = opations
+  const { start, end } = range
+  const res: Record<string, any>[] = []
+  for (let i = start; i <= end; i++) {
+    const params = cloneDeep(rawParams)
+    params.page = i
+    res.push(params)
+  }
+  return res
+}
+
+export interface CrawlerSchema {
+  name: string
+  description: string
+  fn: FnString
+  userParamsSchema: Record<string, any>
+}
