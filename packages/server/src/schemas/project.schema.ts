@@ -7,9 +7,9 @@ import { Document, Schema as mongooseSchema } from 'mongoose'
 export type ProjectDocument = Project & Document
 @Schema({ timestamps: true })
 export class Project extends Document {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   name: string
-  @Prop({ required: false })
+  @Prop({ required: true })
   description: string
   @Prop({ required: true })
   owner: mongooseSchema.Types.ObjectId
