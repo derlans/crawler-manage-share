@@ -1,10 +1,19 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { ValidationPipe } from '@nestjs/common'
+import { Logger, ValidationPipe } from '@nestjs/common'
+import { HttpExceptionFilter } from './common/filters/http-exception.filter'
+import { TransformInterceptor } from './common/interceptor/transform.interceptor'
+import { AuthGuard } from '@/common/guard/auth.guard'
+import { UserService } from './modules/user/user.service'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }))
+  app.setGlobalPrefix('api')
+  app.useGlobalFilters(new HttpExceptionFilter(new Logger()))
+  app.useGlobalInterceptors(new TransformInterceptor())
+  const userService = app.get(UserService)
+  app.useGlobalGuards(new AuthGuard(userService))
   await app.listen(3000)
 }
 bootstrap()

@@ -1,5 +1,7 @@
 export const add = (a: number, b: number) => a + b
 
-export * from './crawler'
+export * from './src/crawler'
 
-export * from './is'
+export * from './src/is'
+
+export * from './src/check'

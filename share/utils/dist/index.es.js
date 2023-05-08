@@ -10,15 +10,15 @@ function F(t, e) {
       return r;
   return -1;
 }
-var Yt = Array.prototype, Jt = Yt.splice;
-function Xt(t) {
+var Yt = Array.prototype, Zt = Yt.splice;
+function Jt(t) {
   var e = this.__data__, r = F(e, t);
   if (r < 0)
     return !1;
   var n = e.length - 1;
-  return r == n ? e.pop() : Jt.call(e, r, 1), --this.size, !0;
+  return r == n ? e.pop() : Zt.call(e, r, 1), --this.size, !0;
 }
-function Zt(t) {
+function Xt(t) {
   var e = this.__data__, r = F(e, t);
   return r < 0 ? void 0 : e[r][1];
 }
@@ -37,8 +37,8 @@ function g(t) {
   }
 }
 g.prototype.clear = qt;
-g.prototype.delete = Xt;
-g.prototype.get = Zt;
+g.prototype.delete = Jt;
+g.prototype.get = Xt;
 g.prototype.has = Qt;
 g.prototype.set = kt;
 function te() {
@@ -60,16 +60,16 @@ var oe = typeof self == "object" && self && self.Object === Object && self, se =
 const l = se;
 var ie = l.Symbol;
 const v = ie;
-var wt = Object.prototype, ce = wt.hasOwnProperty, ue = wt.toString, A = v ? v.toStringTag : void 0;
+var At = Object.prototype, ce = At.hasOwnProperty, ue = At.toString, w = v ? v.toStringTag : void 0;
 function fe(t) {
-  var e = ce.call(t, A), r = t[A];
+  var e = ce.call(t, w), r = t[w];
   try {
-    t[A] = void 0;
+    t[w] = void 0;
     var n = !0;
   } catch {
   }
   var c = ue.call(t);
-  return n && (e ? t[A] = r : delete t[A]), c;
+  return n && (e ? t[w] = r : delete t[w]), c;
 }
 var pe = Object.prototype, le = pe.toString;
 function ge(t) {
@@ -84,7 +84,7 @@ function C(t) {
   return t != null && (e == "object" || e == "function");
 }
 var be = "[object AsyncFunction]", ye = "[object Function]", $e = "[object GeneratorFunction]", Te = "[object Proxy]";
-function At(t) {
+function wt(t) {
   if (!C(t))
     return !1;
   var e = x(t);
@@ -113,13 +113,13 @@ function $(t) {
   }
   return "";
 }
-var we = /[\\^$.*+?()[\]{}|]/g, Ae = /^\[object .+?Constructor\]$/, Se = Function.prototype, Oe = Object.prototype, Pe = Se.toString, xe = Oe.hasOwnProperty, Ce = RegExp(
-  "^" + Pe.call(xe).replace(we, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
+var Ae = /[\\^$.*+?()[\]{}|]/g, we = /^\[object .+?Constructor\]$/, Se = Function.prototype, Oe = Object.prototype, Pe = Se.toString, xe = Oe.hasOwnProperty, Ce = RegExp(
+  "^" + Pe.call(xe).replace(Ae, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
 );
 function Ie(t) {
   if (!C(t) || ve(t))
     return !1;
-  var e = At(t) ? Ce : Ae;
+  var e = wt(t) ? Ce : we;
   return e.test($(t));
 }
 function Ee(t, e) {
@@ -149,10 +149,10 @@ function Ne(t) {
   }
   return Ge.call(e, t) ? e[t] : void 0;
 }
-var Re = Object.prototype, ze = Re.hasOwnProperty;
+var ze = Object.prototype, Re = ze.hasOwnProperty;
 function Ke(t) {
   var e = this.__data__;
-  return P ? e[t] !== void 0 : ze.call(e, t);
+  return P ? e[t] !== void 0 : Re.call(e, t);
 }
 var He = "__lodash_hash_undefined__";
 function Ve(t, e) {
@@ -190,13 +190,13 @@ function Ye(t) {
   var e = M(this, t).delete(t);
   return this.size -= e ? 1 : 0, e;
 }
-function Je(t) {
+function Ze(t) {
   return M(this, t).get(t);
 }
-function Xe(t) {
+function Je(t) {
   return M(this, t).has(t);
 }
-function Ze(t, e) {
+function Xe(t, e) {
   var r = M(this, t), n = r.size;
   return r.set(t, e), this.size += r.size == n ? 0 : 1, this;
 }
@@ -209,9 +209,9 @@ function m(t) {
 }
 m.prototype.clear = We;
 m.prototype.delete = Ye;
-m.prototype.get = Je;
-m.prototype.has = Xe;
-m.prototype.set = Ze;
+m.prototype.get = Ze;
+m.prototype.has = Je;
+m.prototype.set = Xe;
 var Qe = 200;
 function ke(t, e) {
   var r = this.__data__;
@@ -223,15 +223,15 @@ function ke(t, e) {
   }
   return r.set(t, e), this.size = r.size, this;
 }
-function w(t) {
+function A(t) {
   var e = this.__data__ = new g(t);
   this.size = e.size;
 }
-w.prototype.clear = te;
-w.prototype.delete = ee;
-w.prototype.get = re;
-w.prototype.has = ne;
-w.prototype.set = ke;
+A.prototype.clear = te;
+A.prototype.delete = ee;
+A.prototype.get = re;
+A.prototype.has = ne;
+A.prototype.set = ke;
 function tr(t, e) {
   for (var r = -1, n = t == null ? 0 : t.length; ++r < n && e(t[r], r, t) !== !1; )
     ;
@@ -286,7 +286,7 @@ var Pt = Object.prototype, sr = Pt.hasOwnProperty, ir = Pt.propertyIsEnumerable,
 };
 const ur = cr;
 var fr = Array.isArray;
-const z = fr;
+const R = fr;
 function pr() {
   return !1;
 }
@@ -301,9 +301,9 @@ var $r = 9007199254740991;
 function It(t) {
   return typeof t == "number" && t > -1 && t % 1 == 0 && t <= $r;
 }
-var Tr = "[object Arguments]", _r = "[object Array]", vr = "[object Boolean]", jr = "[object Date]", mr = "[object Error]", wr = "[object Function]", Ar = "[object Map]", Sr = "[object Number]", Or = "[object Object]", Pr = "[object RegExp]", xr = "[object Set]", Cr = "[object String]", Ir = "[object WeakMap]", Er = "[object ArrayBuffer]", Fr = "[object DataView]", Mr = "[object Float32Array]", Dr = "[object Float64Array]", Ur = "[object Int8Array]", Br = "[object Int16Array]", Lr = "[object Int32Array]", Gr = "[object Uint8Array]", Nr = "[object Uint8ClampedArray]", Rr = "[object Uint16Array]", zr = "[object Uint32Array]", i = {};
-i[Mr] = i[Dr] = i[Ur] = i[Br] = i[Lr] = i[Gr] = i[Nr] = i[Rr] = i[zr] = !0;
-i[Tr] = i[_r] = i[Er] = i[vr] = i[Fr] = i[jr] = i[mr] = i[wr] = i[Ar] = i[Sr] = i[Or] = i[Pr] = i[xr] = i[Cr] = i[Ir] = !1;
+var Tr = "[object Arguments]", _r = "[object Array]", vr = "[object Boolean]", jr = "[object Date]", mr = "[object Error]", Ar = "[object Function]", wr = "[object Map]", Sr = "[object Number]", Or = "[object Object]", Pr = "[object RegExp]", xr = "[object Set]", Cr = "[object String]", Ir = "[object WeakMap]", Er = "[object ArrayBuffer]", Fr = "[object DataView]", Mr = "[object Float32Array]", Dr = "[object Float64Array]", Ur = "[object Int8Array]", Br = "[object Int16Array]", Lr = "[object Int32Array]", Gr = "[object Uint8Array]", Nr = "[object Uint8ClampedArray]", zr = "[object Uint16Array]", Rr = "[object Uint32Array]", i = {};
+i[Mr] = i[Dr] = i[Ur] = i[Br] = i[Lr] = i[Gr] = i[Nr] = i[zr] = i[Rr] = !0;
+i[Tr] = i[_r] = i[Er] = i[vr] = i[Fr] = i[jr] = i[mr] = i[Ar] = i[wr] = i[Sr] = i[Or] = i[Pr] = i[xr] = i[Cr] = i[Ir] = !1;
 function Kr(t) {
   return I(t) && It(t.length) && !!i[x(t)];
 }
@@ -322,20 +322,20 @@ var Et = typeof exports == "object" && exports && !exports.nodeType && exports, 
 const j = Vr;
 var st = j && j.isTypedArray, Wr = st ? K(st) : Kr;
 const qr = Wr;
-var Yr = Object.prototype, Jr = Yr.hasOwnProperty;
+var Yr = Object.prototype, Zr = Yr.hasOwnProperty;
 function Ft(t, e) {
-  var r = z(t), n = !r && ur(t), c = !r && !n && Ct(t), a = !r && !n && !c && qr(t), o = r || n || c || a, u = o ? ar(t.length, String) : [], f = u.length;
+  var r = R(t), n = !r && ur(t), c = !r && !n && Ct(t), a = !r && !n && !c && qr(t), o = r || n || c || a, u = o ? ar(t.length, String) : [], f = u.length;
   for (var p in t)
-    (e || Jr.call(t, p)) && !(o && // Safari 9 has enumerable `arguments.length` in strict mode.
+    (e || Zr.call(t, p)) && !(o && // Safari 9 has enumerable `arguments.length` in strict mode.
     (p == "length" || // Node.js 0.10 has enumerable non-index properties on buffers.
     c && (p == "offset" || p == "parent") || // PhantomJS 2 has enumerable non-index properties on typed arrays.
     a && (p == "buffer" || p == "byteLength" || p == "byteOffset") || // Skip index properties.
     yr(p, f))) && u.push(p);
   return u;
 }
-var Xr = Object.prototype;
+var Jr = Object.prototype;
 function H(t) {
-  var e = t && t.constructor, r = typeof e == "function" && e.prototype || Xr;
+  var e = t && t.constructor, r = typeof e == "function" && e.prototype || Jr;
   return t === r;
 }
 function Mt(t, e) {
@@ -343,8 +343,8 @@ function Mt(t, e) {
     return t(e(r));
   };
 }
-var Zr = Mt(Object.keys, Object);
-const Qr = Zr;
+var Xr = Mt(Object.keys, Object);
+const Qr = Xr;
 var kr = Object.prototype, tn = kr.hasOwnProperty;
 function en(t) {
   if (!H(t))
@@ -355,7 +355,7 @@ function en(t) {
   return e;
 }
 function Dt(t) {
-  return t != null && It(t.length) && !At(t);
+  return t != null && It(t.length) && !wt(t);
 }
 function V(t) {
   return Dt(t) ? Ft(t) : en(t);
@@ -433,26 +433,26 @@ const Nt = Tn;
 function _n(t, e) {
   return D(t, Nt(t), e);
 }
-function Rt(t, e, r) {
+function zt(t, e, r) {
   var n = e(t);
-  return z(t) ? n : Lt(n, r(t));
+  return R(t) ? n : Lt(n, r(t));
 }
 function vn(t) {
-  return Rt(t, V, q);
+  return zt(t, V, q);
 }
 function jn(t) {
-  return Rt(t, W, Nt);
+  return zt(t, W, Nt);
 }
 var mn = T(l, "DataView");
 const L = mn;
-var wn = T(l, "Promise");
-const G = wn;
-var An = T(l, "Set");
-const N = An;
+var An = T(l, "Promise");
+const G = An;
+var wn = T(l, "Set");
+const N = wn;
 var Sn = T(l, "WeakMap");
-const R = Sn;
-var pt = "[object Map]", On = "[object Object]", lt = "[object Promise]", gt = "[object Set]", ht = "[object WeakMap]", dt = "[object DataView]", Pn = $(L), xn = $(O), Cn = $(G), In = $(N), En = $(R), b = x;
-(L && b(new L(new ArrayBuffer(1))) != dt || O && b(new O()) != pt || G && b(G.resolve()) != lt || N && b(new N()) != gt || R && b(new R()) != ht) && (b = function(t) {
+const z = Sn;
+var pt = "[object Map]", On = "[object Object]", lt = "[object Promise]", gt = "[object Set]", ht = "[object WeakMap]", dt = "[object DataView]", Pn = $(L), xn = $(O), Cn = $(G), In = $(N), En = $(z), b = x;
+(L && b(new L(new ArrayBuffer(1))) != dt || O && b(new O()) != pt || G && b(G.resolve()) != lt || N && b(new N()) != gt || z && b(new z()) != ht) && (b = function(t) {
   var e = x(t), r = e == On ? t.constructor : void 0, n = r ? $(r) : "";
   if (n)
     switch (n) {
@@ -477,12 +477,12 @@ function Dn(t) {
 }
 var Un = l.Uint8Array;
 const bt = Un;
-function J(t) {
+function Z(t) {
   var e = new t.constructor(t.byteLength);
   return new bt(e).set(new bt(t)), e;
 }
 function Bn(t, e) {
-  var r = e ? J(t.buffer) : t.buffer;
+  var r = e ? Z(t.buffer) : t.buffer;
   return new t.constructor(r, t.byteOffset, t.byteLength);
 }
 var Ln = /\w*$/;
@@ -494,20 +494,20 @@ var yt = v ? v.prototype : void 0, $t = yt ? yt.valueOf : void 0;
 function Nn(t) {
   return $t ? Object($t.call(t)) : {};
 }
-function Rn(t, e) {
-  var r = e ? J(t.buffer) : t.buffer;
+function zn(t, e) {
+  var r = e ? Z(t.buffer) : t.buffer;
   return new t.constructor(r, t.byteOffset, t.length);
 }
-var zn = "[object Boolean]", Kn = "[object Date]", Hn = "[object Map]", Vn = "[object Number]", Wn = "[object RegExp]", qn = "[object Set]", Yn = "[object String]", Jn = "[object Symbol]", Xn = "[object ArrayBuffer]", Zn = "[object DataView]", Qn = "[object Float32Array]", kn = "[object Float64Array]", ta = "[object Int8Array]", ea = "[object Int16Array]", ra = "[object Int32Array]", na = "[object Uint8Array]", aa = "[object Uint8ClampedArray]", oa = "[object Uint16Array]", sa = "[object Uint32Array]";
+var Rn = "[object Boolean]", Kn = "[object Date]", Hn = "[object Map]", Vn = "[object Number]", Wn = "[object RegExp]", qn = "[object Set]", Yn = "[object String]", Zn = "[object Symbol]", Jn = "[object ArrayBuffer]", Xn = "[object DataView]", Qn = "[object Float32Array]", kn = "[object Float64Array]", ta = "[object Int8Array]", ea = "[object Int16Array]", ra = "[object Int32Array]", na = "[object Uint8Array]", aa = "[object Uint8ClampedArray]", oa = "[object Uint16Array]", sa = "[object Uint32Array]";
 function ia(t, e, r) {
   var n = t.constructor;
   switch (e) {
-    case Xn:
-      return J(t);
-    case zn:
+    case Jn:
+      return Z(t);
+    case Rn:
     case Kn:
       return new n(+t);
-    case Zn:
+    case Xn:
       return Bn(t, r);
     case Qn:
     case kn:
@@ -518,7 +518,7 @@ function ia(t, e, r) {
     case aa:
     case oa:
     case sa:
-      return Rn(t, r);
+      return zn(t, r);
     case Hn:
       return new n();
     case Vn:
@@ -528,7 +528,7 @@ function ia(t, e, r) {
       return Gn(t);
     case qn:
       return new n();
-    case Jn:
+    case Zn:
       return Nn(t);
   }
 }
@@ -561,25 +561,25 @@ function ba(t) {
 }
 var vt = j && j.isSet, ya = vt ? K(vt) : ba;
 const $a = ya;
-var Ta = 1, _a = 2, va = 4, zt = "[object Arguments]", ja = "[object Array]", ma = "[object Boolean]", wa = "[object Date]", Aa = "[object Error]", Kt = "[object Function]", Sa = "[object GeneratorFunction]", Oa = "[object Map]", Pa = "[object Number]", Ht = "[object Object]", xa = "[object RegExp]", Ca = "[object Set]", Ia = "[object String]", Ea = "[object Symbol]", Fa = "[object WeakMap]", Ma = "[object ArrayBuffer]", Da = "[object DataView]", Ua = "[object Float32Array]", Ba = "[object Float64Array]", La = "[object Int8Array]", Ga = "[object Int16Array]", Na = "[object Int32Array]", Ra = "[object Uint8Array]", za = "[object Uint8ClampedArray]", Ka = "[object Uint16Array]", Ha = "[object Uint32Array]", s = {};
-s[zt] = s[ja] = s[Ma] = s[Da] = s[ma] = s[wa] = s[Ua] = s[Ba] = s[La] = s[Ga] = s[Na] = s[Oa] = s[Pa] = s[Ht] = s[xa] = s[Ca] = s[Ia] = s[Ea] = s[Ra] = s[za] = s[Ka] = s[Ha] = !0;
-s[Aa] = s[Kt] = s[Fa] = !1;
+var Ta = 1, _a = 2, va = 4, Rt = "[object Arguments]", ja = "[object Array]", ma = "[object Boolean]", Aa = "[object Date]", wa = "[object Error]", Kt = "[object Function]", Sa = "[object GeneratorFunction]", Oa = "[object Map]", Pa = "[object Number]", Ht = "[object Object]", xa = "[object RegExp]", Ca = "[object Set]", Ia = "[object String]", Ea = "[object Symbol]", Fa = "[object WeakMap]", Ma = "[object ArrayBuffer]", Da = "[object DataView]", Ua = "[object Float32Array]", Ba = "[object Float64Array]", La = "[object Int8Array]", Ga = "[object Int16Array]", Na = "[object Int32Array]", za = "[object Uint8Array]", Ra = "[object Uint8ClampedArray]", Ka = "[object Uint16Array]", Ha = "[object Uint32Array]", s = {};
+s[Rt] = s[ja] = s[Ma] = s[Da] = s[ma] = s[Aa] = s[Ua] = s[Ba] = s[La] = s[Ga] = s[Na] = s[Oa] = s[Pa] = s[Ht] = s[xa] = s[Ca] = s[Ia] = s[Ea] = s[za] = s[Ra] = s[Ka] = s[Ha] = !0;
+s[wa] = s[Kt] = s[Fa] = !1;
 function E(t, e, r, n, c, a) {
   var o, u = e & Ta, f = e & _a, p = e & va;
   if (r && (o = c ? r(t, n, c, a) : r(t)), o !== void 0)
     return o;
   if (!C(t))
     return t;
-  var X = z(t);
-  if (X) {
+  var J = R(t);
+  if (J) {
     if (o = Dn(t), !u)
       return pn(t, o);
   } else {
-    var _ = Y(t), Z = _ == Kt || _ == Sa;
+    var _ = Y(t), X = _ == Kt || _ == Sa;
     if (Ct(t))
       return fn(t, u);
-    if (_ == Ht || _ == zt || Z && !c) {
-      if (o = f || Z ? {} : fa(t), !u)
+    if (_ == Ht || _ == Rt || X && !c) {
+      if (o = f || X ? {} : fa(t), !u)
         return f ? _n(t, cn(o, t)) : bn(t, rn(o, t));
     } else {
       if (!s[_])
@@ -587,7 +587,7 @@ function E(t, e, r, n, c, a) {
       o = ia(t, _, u);
     }
   }
-  a || (a = new w());
+  a || (a = new A());
   var Q = a.get(t);
   if (Q)
     return Q;
@@ -596,7 +596,7 @@ function E(t, e, r, n, c, a) {
   }) : ha(t) && t.forEach(function(h, d) {
     o.set(d, E(h, e, r, d, t, a));
   });
-  var Wt = p ? f ? jn : vn : f ? W : V, k = X ? void 0 : Wt(t);
+  var Wt = p ? f ? jn : vn : f ? W : V, k = J ? void 0 : Wt(t);
   return tr(k || t, function(h, d) {
     k && (d = h, h = t[d]), Ot(o, d, E(h, e, r, d, t, a));
   }), o;
@@ -653,20 +653,22 @@ class Ya {
     return this.result.push(...r), r;
   }
 }
-const qa = (t) => Function(`return ${t}`)(), Ja = (t) => {
+const qa = (t) => Function(`return ${t}`)(), Za = (t) => {
   const { rawParams: e, range: r } = t, { start: n, end: c } = r, a = [];
   for (let o = n; o <= c; o++) {
     const u = Vt(e);
     u.page = o, a.push(u);
   }
   return a;
-}, Xa = (t) => /^(async\s+)?function\s*\w*\s*\([\w\s,]*\)\s*\{[\s\S]*\}$/.test(t), Za = (t) => /^async\s*function\s*\w*\s*\([\w\s,]*\)\s*\{[\s\S]*\}$/.test(t), Qa = (t, e) => t + e;
+}, Ja = (t) => /^(async\s+)?function\s*\w*\s*\([\w\s,]*\)\s*\{[\s\S]*\}$/.test(t), Xa = (t) => /^async\s*function\s*\w*\s*\([\w\s,]*\)\s*\{[\s\S]*\}$/.test(t), Qa = (t) => /^[a-zA-Z0-9_-]{4,16}$/.test(t), ka = (t) => /^[a-zA-Z0-9_-]{6,16}$/.test(t), to = (t, e) => t + e;
 export {
   Ya as Crawler,
-  Qa as add,
-  Ja as generateParams,
-  Za as isAsyncFunctionString,
-  Xa as isFunctionString,
+  to as add,
+  ka as checkPassword,
+  Qa as checkUserName,
+  Za as generateParams,
+  Xa as isAsyncFunctionString,
+  Ja as isFunctionString,
   qa as turnFnStringToFn
 };
 //# sourceMappingURL=index.es.js.map
