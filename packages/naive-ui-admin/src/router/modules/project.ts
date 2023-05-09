@@ -35,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/project/manage/project-manage.vue'),
       },
       {
-        path: 'manage/detail/:id',
+        path: 'detail/:id',
         name: 'project-detail',
         meta: {
           title: '项目详情',
