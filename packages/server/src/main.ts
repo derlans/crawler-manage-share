@@ -14,6 +14,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor())
   const userService = app.get(UserService)
   app.useGlobalGuards(new AuthGuard(userService))
+  app.enableCors()
   await app.listen(3000)
 }
 bootstrap()

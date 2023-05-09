@@ -6,8 +6,6 @@ export class CreateProjectDto {
   readonly name: string
   @IsString()
   readonly description: string
-  @IsString()
-  readonly owner: string
-  @IsObject({ each: true })
-  readonly crawlerList: CrawlerSchema[]
+  // @IsObject({ each: true })
+  // readonly crawlerList: CrawlerSchema[]
 }

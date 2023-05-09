@@ -24,7 +24,7 @@ export interface CrawlerResult {
 export class Crawler {
   fnString: FnString
   fn: Function
-  userParamsSchema: Record<string, any>
+  userParamsSchema: string
   envParams: Partial<EnvParams>
   result: CrawlerResult[]
   constructor(
@@ -34,7 +34,7 @@ export class Crawler {
     crawlerOpations = crawlerOpations || { envParams: {} }
     this.fnString = rawFn
     this.fn = turnFnStringToFn(rawFn)
-    this.userParamsSchema = {}
+    this.userParamsSchema = JSON.stringify({})
     this.result = []
     this.envParams = crawlerOpations.envParams
   }
@@ -119,5 +119,29 @@ export interface CrawlerSchema {
   name: string
   description: string
   fn: FnString
-  userParamsSchema: Record<string, any>
+  userParamsSchema: string
+}
+
+export const defaultCrawlerSchema: CrawlerSchema = {
+  name: 'xx爬虫',
+  description: '爬取xx网站的xx数据',
+  fn: `async function fn(env, user) {
+    
+}` as FnString,
+  userParamsSchema: JSON.stringify(
+    {
+      title: '微博搜索',
+      description: 'A simple form example.',
+      type: 'object',
+      required: ['q'],
+      properties: {
+        q: {
+          type: 'string',
+          title: '查询的字段',
+        },
+      },
+    },
+    null,
+    2,
+  ),
 }

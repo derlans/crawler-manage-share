@@ -1,5 +1,5 @@
-import { Crawler } from '../crawler'
-import { FnString } from '../is'
+import { Crawler } from '../src/crawler'
+import { FnString } from '../src/is'
 
 export const fnString = 'function add(a, b) { return a + b; }' as FnString
 export const fnString2 = 'function add ( a ,  b ) { return a + b; }' as FnString

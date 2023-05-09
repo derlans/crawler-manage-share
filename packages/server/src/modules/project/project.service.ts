@@ -12,7 +12,13 @@ export class ProjectService {
   async projectList() {
     return await this.projectModel.find()
   }
-  async createProject(project: CreateProjectDto) {
-    return await this.projectModel.create(project)
+  async createProject(project: CreateProjectDto, userid: string) {
+    return await this.projectModel.create({ ...project, owner: userid })
+  }
+  async projectDetail(_id: string) {
+    return await this.projectModel.findById(_id)
+  }
+  async updateProject(_id: string, rest: any) {
+    return await this.projectModel.findByIdAndUpdate(_id, rest)
   }
 }

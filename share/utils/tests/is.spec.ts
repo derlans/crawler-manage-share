@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isFunctionString } from '../is'
+import { isFunctionString } from '../src/is'
 import {
   fnString,
   fnString2,

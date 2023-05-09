@@ -5,7 +5,7 @@ import { PageEnum } from './type'
 const HomeRouter: RouteRecordRaw = {
   path: '/',
   name: 'Root',
-  redirect: PageEnum.CRAWLER_RUN,
+  redirect: PageEnum.REGISTER,
   meta: {
     title: 'Root',
   },
@@ -18,7 +18,28 @@ const CrawlerRunRouter: RouteRecordRaw = {
     title: '爬虫执行',
   },
 }
-const constantRouter = [HomeRouter, CrawlerRunRouter]
+const RegisterRouter: RouteRecordRaw = {
+  path: PageEnum.REGISTER,
+  name: 'Register',
+  component: () => import('@/pages/user/register-index.vue'),
+  meta: {
+    title: '注册',
+  },
+}
+const LoginRouter: RouteRecordRaw = {
+  path: PageEnum.LOGIN,
+  name: 'Login',
+  component: () => import('@/pages/user/login-index.vue'),
+  meta: {
+    title: '登录',
+  },
+}
+const constantRouter = [
+  HomeRouter,
+  CrawlerRunRouter,
+  RegisterRouter,
+  LoginRouter,
+]
 const router = createRouter({
   history: createWebHistory(''),
   routes: constantRouter,

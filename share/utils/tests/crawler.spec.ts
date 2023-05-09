@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { turnFnStringToFn } from '../crawler'
+import { turnFnStringToFn } from '../src/crawler'
 import { crawler1, crawler2, crawler3, fnString } from './constants'
 
 describe('crawler', () => {

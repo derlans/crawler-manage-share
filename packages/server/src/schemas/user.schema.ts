@@ -8,3 +8,5 @@ export class User extends Document {
   password: string
 }
 export const UserSchema = SchemaFactory.createForClass(User)
+// 对应的_doc的类型
+export type UserDoc = User & Document
