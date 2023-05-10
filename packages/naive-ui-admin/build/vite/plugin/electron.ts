@@ -2,7 +2,8 @@ import { UserConfig, ConfigEnv } from 'vite';
 import electron from 'vite-plugin-electron';
 import renderer from 'vite-plugin-electron-renderer';
 import { rmSync } from 'node:fs';
-export default ({ command, mode }: ConfigEnv): UserConfig['plugins'] => {
+import pkg from '../../../package.json';
+export default ({ command, mode }: ConfigEnv) => {
   const isServe = command === 'serve';
   const isBuild = command === 'build';
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG;

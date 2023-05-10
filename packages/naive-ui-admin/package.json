@@ -6,11 +6,13 @@
     "email": "735878602@qq.com",
     "url": "https://github.com/jekip/naive-ui-admin"
   },
+  "main": "dist-electron/main/index.js",
   "private": true,
   "scripts": {
     "bootstrap": "yarn install",
     "serve": "npm run dev",
     "dev": "vite",
+    "dev:electron": "vite --mode=electron",
     "build": "vite build && esno ./build/script/postBuild.ts",
     "build:no-cache": "yarn clean:cache && npm run build",
     "report": "cross-env REPORT=true npm run build",

@@ -8,7 +8,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import { configHtmlPlugin } from './html';
 import { configMockPlugin } from './mock';
 import { configCompressPlugin } from './compress';
-
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, prodMock) {
   const { VITE_USE_MOCK, VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE } = viteEnv;
 
@@ -37,6 +36,5 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, prodMock) 
       configCompressPlugin(VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE)
     );
   }
-
   return vitePlugins;
 }

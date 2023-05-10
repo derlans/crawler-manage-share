@@ -7,6 +7,8 @@ import { OUTPUT_DIR } from './build/constant';
 import { createProxy } from './build/vite/proxy';
 import pkg from './package.json';
 import { format } from 'date-fns';
+import electronPlu from './build/vite/plugin/electron';
+
 const { dependencies, devDependencies, name, version } = pkg;
 
 const __APP_INFO__ = {
@@ -18,7 +20,8 @@ function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir);
 }
 
-export default ({ command, mode }: ConfigEnv): UserConfig => {
+export default (configEnv: ConfigEnv): UserConfig => {
+  const { command, mode } = configEnv;
   const root = process.cwd();
   const env = loadEnv(mode, root);
   const viteEnv = wrapperEnv(env);
@@ -42,7 +45,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ],
       dedupe: ['vue'],
     },
-    plugins: createVitePlugins(viteEnv, isBuild, prodMock),
+    plugins: [...createVitePlugins(viteEnv, isBuild, prodMock), ...electronPlu(configEnv)],
     define: {
       __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
