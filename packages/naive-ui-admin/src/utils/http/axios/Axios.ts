@@ -152,12 +152,7 @@ export class VAxios {
     if (!transform) {
       return;
     }
-    const {
-      requestInterceptors,
-      requestInterceptorsCatch,
-      responseInterceptors,
-      responseInterceptorsCatch,
-    } = transform;
+    const { requestInterceptors, requestInterceptorsCatch, responseInterceptors } = transform;
 
     const axiosCanceler = new AxiosCanceler();
 
@@ -193,8 +188,8 @@ export class VAxios {
     }, undefined);
 
     // 响应结果拦截器错误捕获
-    responseInterceptorsCatch &&
-      isFunction(responseInterceptorsCatch) &&
-      this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch);
+    // responseInterceptorsCatch &&
+    //   isFunction(responseInterceptorsCatch) &&
+    //   this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch);
   }
 }
