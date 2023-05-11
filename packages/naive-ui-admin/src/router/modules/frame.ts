@@ -12,38 +12,38 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/frame/docs',
     component: Layout,
     meta: {
-      title: '外部页面',
+      title: 'api管理',
       sort: 8,
       icon: renderIcon(DesktopOutline),
     },
     children: [
-      {
-        path: 'naive-admin',
-        name: 'naive-admin',
-        meta: {
-          title: 'NaiveAdmin',
-          frameSrc: 'https://www.naiveadmin.com',
-        },
-        component: IFrame,
-      },
+      // {
+      //   path: 'naive-admin',
+      //   name: 'naive-admin',
+      //   meta: {
+      //     title: 'NaiveAdmin',
+      //     frameSrc: 'https://www.naiveadmin.com',
+      //   },
+      //   component: IFrame,
+      // },
       {
         path: 'docs',
         name: 'frame-docs',
         meta: {
-          title: '项目文档(内嵌)',
-          frameSrc: 'https://jekip.github.io/docs',
+          title: 'api管理',
+          frameSrc: 'http://swagger.derlan.top/',
         },
         component: IFrame,
       },
-      {
-        path: 'naive',
-        name: 'frame-naive',
-        meta: {
-          title: 'NaiveUi(内嵌)',
-          frameSrc: 'https://www.naiveui.com',
-        },
-        component: IFrame,
-      },
+      // {
+      //   path: 'naive',
+      //   name: 'frame-naive',
+      //   meta: {
+      //     title: 'NaiveUi(内嵌)',
+      //     frameSrc: 'https://www.naiveui.com',
+      //   },
+      //   component: IFrame,
+      // },
     ],
   },
 ];

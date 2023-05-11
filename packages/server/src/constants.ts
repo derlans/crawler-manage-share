@@ -5,4 +5,8 @@ export const jwtConstants = {
   expiresIn: 1000 * 60 * 60 * 24 * 7,
 }
 
-export const whitelist = ['/api/user/login', '/api/user/register']
+export const whitelist = [
+  '/api/user/login',
+  '/api/user/register',
+  '/api/crawler/test',
+]

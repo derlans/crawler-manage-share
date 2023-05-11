@@ -17,8 +17,9 @@ import { RequestOptions, Result, CreateAxiosOptions } from './types';
 
 import { useUser } from '@/store/modules/user';
 
-const globSetting = useGlobSetting();
-const urlPrefix = globSetting.urlPrefix || '';
+// const globSetting = useGlobSetting();
+const apiUrl = 'http://localhost:3000/';
+const urlPrefix = 'api';
 
 import router from '@/router';
 import { storage } from '@/utils/Storage';
@@ -237,7 +238,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           // 消息提示类型
           errorMessageMode: 'none',
           // 接口地址
-          apiUrl: globSetting.apiUrl,
+          apiUrl: apiUrl,
           // 接口拼接地址
           urlPrefix: urlPrefix,
           //  是否加入时间戳

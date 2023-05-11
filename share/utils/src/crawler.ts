@@ -5,13 +5,15 @@ export interface EnvParams {
   axios: AxiosStatic
 }
 export type UserParams = Record<string, any>
-export interface RunOpations {
+export interface RunOptions {
   // 所有的用户参数
   allUserParams: UserParams[]
   // 并发数
   concurrency: number
   // 超时时间
   timeout?: number
+  // 重试次数
+  retry?: number
 }
 export interface CrawlerResult {
   data: any
@@ -29,14 +31,14 @@ export class Crawler {
   result: CrawlerResult[]
   constructor(
     rawFn: FnString,
-    crawlerOpations?: { envParams: Partial<EnvParams> },
+    crawlerOptions?: { envParams: Partial<EnvParams> },
   ) {
-    crawlerOpations = crawlerOpations || { envParams: {} }
+    crawlerOptions = crawlerOptions || { envParams: {} }
     this.fnString = rawFn
     this.fn = turnFnStringToFn(rawFn)
     this.userParamsSchema = JSON.stringify({})
     this.result = []
-    this.envParams = crawlerOpations.envParams
+    this.envParams = crawlerOptions.envParams
   }
   runOne(userParams: UserParams, timeout = 10000): Promise<CrawlerResult> {
     return new Promise((resolve) => {
@@ -75,13 +77,13 @@ export class Crawler {
         })
     })
   }
-  async run(runOpations: RunOpations) {
+  async run(runOptions: RunOptions) {
     const res: CrawlerResult[] = []
-    const { allUserParams = [], concurrency = 1 } = runOpations
+    const { allUserParams = [], concurrency = 1 } = runOptions
     for (let i = 0; i < allUserParams.length; i = i + concurrency) {
       const v = await Promise.all(
         allUserParams.slice(i, i + concurrency).map((params) => {
-          return this.runOne(cloneDeep(params), runOpations.timeout)
+          return this.runOne(cloneDeep(params), runOptions.timeout)
         }),
       )
       res.push(...v)
@@ -97,14 +99,34 @@ export const turnFnStringToFn = (fnString: FnString): Function => {
 
 // 生成参数
 export interface GenerateParamsOpations {
-  rawParams: Record<string, any>
+  params1: Record<string, any>[]
+  params2: Record<string, any>[]
+  commonParams: Record<string, any>
+}
+
+export const generateParams = (v: GenerateParamsOpations) => {
+  const { params1, params2, commonParams } = v
+  // Params1 * Params2 笛卡尔积
+  const res: Record<string, any>[] = []
+  for (let i = 0; i < params1.length; i++) {
+    for (let j = 0; j < params2.length; j++) {
+      res.push({
+        ...commonParams,
+        ...params1[i],
+        ...params2[j],
+      })
+    }
+  }
+  return res
+}
+
+export const generateParamsByRange = (
+  rawParams: Record<string, any>,
   range: {
     start: number
     end: number
-  }
-}
-export const generateParams = (opations: GenerateParamsOpations) => {
-  const { rawParams, range } = opations
+  },
+) => {
   const { start, end } = range
   const res: Record<string, any>[] = []
   for (let i = start; i <= end; i++) {

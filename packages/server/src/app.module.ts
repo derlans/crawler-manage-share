@@ -4,11 +4,15 @@ import { AppService } from './app.service'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ProjectModule } from './modules/project/project.module'
 import { UserModule } from './modules/user/user.module'
+import { CrawlerModule } from './modules/crawler/crawler.module'
+import { LogModule } from './modules/log/log.module'
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/crawler'),
     ProjectModule,
     UserModule,
+    CrawlerModule,
+    LogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

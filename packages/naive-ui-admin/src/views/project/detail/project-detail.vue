@@ -1,5 +1,11 @@
 <template>
   <n-card :bordered="false" class="proCard">
+    <n-descriptions :bordered="true" :column="4" class="m-4">
+      <n-descriptions-item label="项目名称">{{ projectDetail.name }}</n-descriptions-item>
+      <n-descriptions-item label="项目描述">{{ projectDetail.description }}</n-descriptions-item>
+      <n-descriptions-item label="创建时间">{{ projectDetail.createdAt }}</n-descriptions-item>
+      <n-descriptions-item label="更新时间">{{ projectDetail.updatedAt }}</n-descriptions-item>
+    </n-descriptions>
     <BasicTable
       :columns="columns"
       :request="loadDataTable"
@@ -39,6 +45,20 @@
         </n-space>
       </template>
     </n-modal>
+    <n-modal
+      v-model:show="showCrawlerModal"
+      :show-icon="false"
+      preset="dialog"
+      title="运行爬虫"
+      style="width: 90vw; margin: 50px auto"
+    >
+      <crawler-run :value="crawlerRunForm" :projectid="projectId" />
+      <template #action>
+        <n-space>
+          <n-button @click="() => (showCrawlerModal = false)">取消</n-button>
+        </n-space>
+      </template>
+    </n-modal>
   </n-card>
 </template>
 
@@ -55,9 +75,10 @@
     isAsyncFunctionString,
   } from '@crawler-manage-share/utils';
   import crawlerEdit from '@/views/crawler/crawler-edit.vue';
-
+  import crawlerRun from '@/views/crawler/crawler-run.vue';
   const router = useRouter();
-  const { id: projectId } = router.currentRoute.value.params;
+  const { id } = router.currentRoute.value.params;
+  const projectId = (Array.isArray(id) ? id[0] : id) as string;
   const projectDetail = ref<{
     crawlerList: CrawlerSchema[];
     name: string;
@@ -68,7 +89,9 @@
   const actionRef = ref();
 
   const crawlerForm = ref(defaultCrawlerSchema);
+  const crawlerRunForm = ref(defaultCrawlerSchema);
   const showModal = ref(false);
+  const showCrawlerModal = ref(false);
   const formBtnLoading = ref(false);
 
   const actionColumn = reactive({
@@ -95,6 +118,13 @@
             onClick: () => {
               showModal.value = true;
               crawlerForm.value = record;
+            },
+          },
+          {
+            label: '运行',
+            onClick: () => {
+              showCrawlerModal.value = true;
+              crawlerRunForm.value = record;
             },
           },
         ],

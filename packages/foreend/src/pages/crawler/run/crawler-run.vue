@@ -19,8 +19,8 @@
 import axios from 'axios'
 import { Crawler, FnString, generateParams } from '@crawler-manage-share/utils'
 import VueForm from '@lljj/vue3-form-naive'
-const fn = `async function fccc({axios},{q,page}){
-  axios
+const fn = `async function fun({axios},{q,page}){
+  return axios
   .get('https://m.weibo.cn/api//container/getIndex', {
     params: {
       containerid: '100103type=1&q='+q,
@@ -30,6 +30,7 @@ const fn = `async function fccc({axios},{q,page}){
   })
   .then((res) => {
     console.log(res.data.data,page)
+    return res.data.data
   })
 }`
 
