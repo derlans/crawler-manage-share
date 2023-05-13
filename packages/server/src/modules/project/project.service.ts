@@ -3,6 +3,7 @@ import { Project } from '../../schemas/project.schema'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CreateProjectDto } from '@/dto/project.dto'
+import { lastDay, lastMonth, lastWeek } from '@/utils/time'
 @Injectable()
 export class ProjectService {
   constructor(
@@ -20,5 +21,35 @@ export class ProjectService {
   }
   async updateProject(_id: string, rest: any) {
     return await this.projectModel.findByIdAndUpdate(_id, rest)
+  }
+  async count(userid: string) {
+    const totalCount = await this.projectModel.countDocuments({
+      owner: userid,
+    })
+    const lastDayCount = await this.projectModel.countDocuments({
+      owner: userid,
+      createdAt: {
+        $gte: lastDay(),
+      },
+    })
+    const lastWeekCount = await this.projectModel.countDocuments({
+      owner: userid,
+      createdAt: {
+        $gte: lastWeek(),
+      },
+    })
+    const lastMonthCount = await this.projectModel.countDocuments({
+      owner: userid,
+      createdAt: {
+        $gte: lastMonth(),
+      },
+    })
+
+    return {
+      totalCount,
+      lastDayCount,
+      lastWeekCount,
+      lastMonthCount,
+    }
   }
 }

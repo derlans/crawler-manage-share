@@ -16,5 +16,6 @@ import { FileModule } from '../file/file.module'
   ],
   controllers: [LogController],
   providers: [LogService],
+  exports: [LogService],
 })
 export class LogModule {}

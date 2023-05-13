@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Crawler } from '@crawler-manage-share/utils'
 import axios from 'axios'
+import { lastDay, lastMonth, lastWeek } from '@/utils/time'
 @Injectable()
 export class CrawlerService {
   constructor(
@@ -27,5 +28,35 @@ export class CrawlerService {
     const crawler = new Crawler(crawlerSchema.fn, { envParams: { axios } })
     const result = await crawler.run(runOptions)
     return [result, crawler]
+  }
+  async count(userid: string) {
+    const totalCount = await this.crawlerRunModel.countDocuments({
+      owner: userid,
+    })
+    const lastDayCount = await this.crawlerRunModel.countDocuments({
+      owner: userid,
+      createdAt: {
+        $gte: lastDay(),
+      },
+    })
+    const lastWeekCount = await this.crawlerRunModel.countDocuments({
+      owner: userid,
+      createdAt: {
+        $gte: lastWeek(),
+      },
+    })
+    const lastMonthCount = await this.crawlerRunModel.countDocuments({
+      owner: userid,
+      createdAt: {
+        $gte: lastMonth(),
+      },
+    })
+
+    return {
+      allCount: totalCount,
+      lastDayCount,
+      lastWeekCount,
+      lastMonthCount,
+    }
   }
 }

@@ -192,6 +192,55 @@
           </template>
         </NCard>
       </n-grid-item>
+      <n-grid-item>
+        <NCard
+          title="成交额"
+          :segmented="{ content: true, footer: true }"
+          size="small"
+          :bordered="false"
+        >
+          <template #header-extra>
+            <n-tag type="error">月</n-tag>
+          </template>
+          <div class="py-1 px-1 flex justify-between">
+            <n-skeleton v-if="loading" :width="100" size="medium" />
+            <CountTo v-else prefix="￥" :startVal="1" :endVal="volume.weekLarge" class="text-3xl" />
+          </div>
+          <div class="py-1 px-1 flex justify-between">
+            <div class="text-sn">
+              <n-skeleton v-if="loading" :width="100" size="medium" />
+              <template v-else>
+                月同比
+                <CountTo :startVal="1" suffix="%" :endVal="volume.rise" />
+                <n-icon size="12" color="#00ff6f">
+                  <CaretUpOutlined />
+                </n-icon>
+              </template>
+            </div>
+            <div class="text-sn">
+              <n-skeleton v-if="loading" :width="100" size="medium" />
+              <template v-else>
+                月同比
+                <CountTo :startVal="1" suffix="%" :endVal="volume.decline" />
+                <n-icon size="12" color="#ffde66">
+                  <CaretDownOutlined />
+                </n-icon>
+              </template>
+            </div>
+          </div>
+          <template #footer>
+            <div class="flex justify-between">
+              <n-skeleton v-if="loading" :width="100" size="medium" />
+              <template v-else>
+                <div class="text-sn"> 总成交额： </div>
+                <div class="text-sn">
+                  <CountTo prefix="￥" :startVal="1" :endVal="volume.amount" />
+                </div>
+              </template>
+            </div>
+          </template>
+        </NCard>
+      </n-grid-item>
     </n-grid>
 
     <!--导航卡片-->
