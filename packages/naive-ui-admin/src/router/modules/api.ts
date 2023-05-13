@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { OptionsSharp } from '@vicons/ionicons5';
+import { ApiOutlined } from '@vicons/antd';
 import { renderIcon } from '@/utils/index';
 
 /**
@@ -16,31 +16,33 @@ import { renderIcon } from '@/utils/index';
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/system',
-    name: 'System',
-    redirect: '/system/menu',
+    path: '/api',
+    name: 'Api',
+    redirect: '/api/detail',
     component: Layout,
     meta: {
-      title: '系统设置',
-      icon: renderIcon(OptionsSharp),
-      sort: 1,
+      title: '接口',
+      icon: renderIcon(ApiOutlined),
+      sort: 2,
     },
     children: [
+      // {
+      //   path: 'manage',
+      //   name: 'api-manage',
+      //   meta: {
+      //     title: '接口管理',
+      //   },
+      //   component: () => import('@/views/api/manage/api-manage.vue'),
+      // },
       {
-        path: 'menu',
-        name: 'system_menu',
+        path: 'detail',
+        name: 'api-detail',
         meta: {
-          title: '菜单权限管理',
+          title: '接口详情',
+          hidden: false,
+          activeMenu: 'basic-api',
         },
-        component: () => import('@/views/system/menu/menu.vue'),
-      },
-      {
-        path: 'role',
-        name: 'system_role',
-        meta: {
-          title: '角色权限管理',
-        },
-        component: () => import('@/views/system/role/role.vue'),
+        component: () => import('@/views/api/detail/api-detail.vue'),
       },
     ],
   },

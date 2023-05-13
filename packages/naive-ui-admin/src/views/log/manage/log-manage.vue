@@ -41,7 +41,8 @@
   import { BasicTable, TableAction } from '@/components/Table';
   import { columns } from './columns';
   import { PlusOutlined } from '@vicons/antd';
-  import { getLogList } from '@/api/log';
+  import { getLogList, getJsonFile } from '@/api/log';
+  import { saveJsonFile } from '@/utils/save';
 
   // const router = useRouter();
   // const message = useMessage();
@@ -60,9 +61,35 @@
         style: 'button',
         actions: [
           {
-            label: '删除',
-            onClick: () => {
-              window['$message'].info(`您点击了，${record.name} 按钮`);
+            label: '导出日志',
+            onClick: async () => {
+              const res = await getJsonFile(record._id);
+              const data = res.data;
+              saveJsonFile(data, record.name + '-log');
+            },
+          },
+          {
+            label: '导出数据',
+            onClick: async () => {
+              const res = await getJsonFile(record._id);
+              const data = res.data.map((item) => {
+                return item.data;
+              });
+              saveJsonFile(data, record.name + '-data');
+            },
+          },
+          {
+            label: '导出成功数据',
+            onClick: async () => {
+              const res = await getJsonFile(record._id);
+              const data = res.data
+                .filter((item) => {
+                  return item.isSuccess;
+                })
+                .map((item) => {
+                  return item.data;
+                });
+              saveJsonFile(data, record.name + '-success');
             },
           },
         ],

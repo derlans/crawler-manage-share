@@ -36,10 +36,16 @@ export class CrawlerRunLog extends Document {
   status: number
   @Prop({ type: Date })
   endTime: Date
-  @Prop({ default: [] })
-  result: any[]
   @Prop({ default: 1 })
   type: number
+  @Prop({ default: 0 })
+  resultCount: number
+  @Prop({ default: 0 })
+  failCount: number
+  @Prop({ default: 0 })
+  successCount: number
+  @Prop({ default: 0 })
+  resultSize: number
 }
 
 export const CrawlerRunLogSchema = SchemaFactory.createForClass(CrawlerRunLog)

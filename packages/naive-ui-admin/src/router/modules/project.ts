@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { TableOutlined } from '@vicons/antd';
+import { FolderOpenOutlined } from '@vicons/antd';
 import { renderIcon } from '@/utils/index';
 
 /**
@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '项目',
-      icon: renderIcon(TableOutlined),
+      icon: renderIcon(FolderOpenOutlined),
       sort: 2,
     },
     children: [

@@ -12,5 +12,6 @@ import { CrawlerController } from './crawler.controller'
   ],
   controllers: [CrawlerController],
   providers: [CrawlerService],
+  exports: [CrawlerService],
 })
 export class CrawlerModule {}

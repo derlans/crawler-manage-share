@@ -1,5 +1,6 @@
 import { FnString } from './is'
 import { AxiosStatic } from 'axios'
+import axios from 'axios'
 import cloneDeep from 'lodash-es/cloneDeep'
 export interface EnvParams {
   axios: AxiosStatic
@@ -33,7 +34,7 @@ export class Crawler {
     rawFn: FnString,
     crawlerOptions?: { envParams: Partial<EnvParams> },
   ) {
-    crawlerOptions = crawlerOptions || { envParams: {} }
+    crawlerOptions = crawlerOptions || { envParams: { axios: axios } }
     this.fnString = rawFn
     this.fn = turnFnStringToFn(rawFn)
     this.userParamsSchema = JSON.stringify({})
@@ -77,7 +78,7 @@ export class Crawler {
         })
     })
   }
-  async run(runOptions: RunOptions) {
+  async run(runOptions: RunOptions, onProgress?: (v: CrawlerResult[]) => void) {
     const res: CrawlerResult[] = []
     const { allUserParams = [], concurrency = 1 } = runOptions
     for (let i = 0; i < allUserParams.length; i = i + concurrency) {
@@ -86,10 +87,23 @@ export class Crawler {
           return this.runOne(cloneDeep(params), runOptions.timeout)
         }),
       )
+      onProgress && onProgress(v)
       res.push(...v)
     }
     this.result.push(...res)
     return res
+  }
+  resultCount() {
+    return this.result.length
+  }
+  successCount() {
+    return this.result.filter((v) => v.isSuccess).length
+  }
+  failCount() {
+    return this.result.filter((v) => !v.isSuccess).length
+  }
+  resultSize() {
+    return JSON.stringify(this.result).length
   }
 }
 

@@ -13,3 +13,24 @@ export function createLog(params) {
     params,
   });
 }
+
+export function getLogDetail(params) {
+  return http.request({
+    url: '/log/detail',
+    method: 'POST',
+    params,
+  });
+}
+
+export function getJsonFile(fileName) {
+  return http.request(
+    {
+      url: `/file/json?fileName=${fileName}`,
+      method: 'GET',
+    },
+    {
+      isTransformResponse: true,
+      isReturnNativeResponse: true,
+    }
+  );
+}

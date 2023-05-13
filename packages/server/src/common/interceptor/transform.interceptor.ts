@@ -11,7 +11,7 @@ export class TransformInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const response = context.switchToHttp().getResponse()
     // 白名单
-    const whitelist = ['/api/crawler/test']
+    const whitelist = ['/api/crawler/test', '/api/file/json']
     // 获取请求路径
     const url = context.switchToHttp().getRequest().url
     // 如果是白名单的请求，直接返回

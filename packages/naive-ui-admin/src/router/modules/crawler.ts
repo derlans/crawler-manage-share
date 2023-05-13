@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { TableOutlined } from '@vicons/antd';
+import { ApartmentOutlined } from '@vicons/antd';
 import { renderIcon } from '@/utils/index';
 
 /**
@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '爬虫',
-      icon: renderIcon(TableOutlined),
+      icon: renderIcon(ApartmentOutlined),
       sort: 2,
     },
     children: [

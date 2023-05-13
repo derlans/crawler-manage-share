@@ -19,14 +19,16 @@
 import axios from 'axios'
 import { Crawler, FnString, generateParams } from '@crawler-manage-share/utils'
 import VueForm from '@lljj/vue3-form-naive'
-const fn = `async function fun({axios},{q,page}){
+const fn = `async function fun(env,params){
+  const {axios}=env
+  const {q,page}=params
   return axios
   .get('https://m.weibo.cn/api//container/getIndex', {
     params: {
       containerid: '100103type=1&q='+q,
       page_type: 'searchall',
       page: page,
-    }, 
+    },
   })
   .then((res) => {
     console.log(res.data.data,page)
@@ -54,10 +56,7 @@ const userParams = ref({
 })
 
 const allUserParams = computed(() =>
-  generateParams({
-    range: range.value,
-    rawParams: userParams.value,
-  }),
+  // generateParams(),
 )
 const run = () => {
   const crawler = new Crawler(value.value as FnString, { envParams })

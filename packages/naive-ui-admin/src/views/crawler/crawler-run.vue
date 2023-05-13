@@ -205,7 +205,10 @@
       name: crawlerRunName.value,
       project: Props.projectid,
       crawler: Props.value,
-      runOptions: runOptions.value,
+      runOptions: {
+        ...runOptions.value,
+        allUserParams: allUserParams.value,
+      },
     });
     router.replace({ name: 'crawler-manage' });
   };

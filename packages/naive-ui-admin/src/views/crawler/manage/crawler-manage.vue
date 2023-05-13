@@ -42,8 +42,10 @@
   import { columns } from './columns';
   import { PlusOutlined } from '@vicons/antd';
   import { getCrawlerList } from '@/api/crawler';
+  import { createLog } from '@/api/log';
+  import { useRouter } from 'vue-router';
 
-  // const router = useRouter();
+  const router = useRouter();
   // const message = useMessage();
   const actionRef = ref();
 
@@ -62,7 +64,21 @@
           {
             label: '删除',
             onClick: () => {
-              window['$message'].info(`您点击了，${record.name} 按钮`);
+              // window['$message'].info(`您点击了，${record.name} 按钮`);
+            },
+          },
+          {
+            label: '服务器运行',
+            onClick: async () => {
+              const { _id: logid } = await createLog({
+                crawlerRun: record._id,
+              });
+              router.push({
+                path: '/log/manage',
+                query: {
+                  id: logid,
+                },
+              });
             },
           },
         ],
