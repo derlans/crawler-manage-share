@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '日志',
       icon: renderIcon(FileTextOutlined),
-      sort: 2,
+      sort: 4,
     },
     children: [
       {

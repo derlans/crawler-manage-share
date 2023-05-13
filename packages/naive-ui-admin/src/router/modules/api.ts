@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '接口',
       icon: renderIcon(ApiOutlined),
-      sort: 2,
+      sort: 5,
     },
     children: [
       // {

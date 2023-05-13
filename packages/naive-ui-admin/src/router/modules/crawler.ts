@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '爬虫',
       icon: renderIcon(ApartmentOutlined),
-      sort: 2,
+      sort: 3,
     },
     children: [
       {
