@@ -16,96 +16,56 @@
 
       onMounted(() => {
         setOptions({
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              lineStyle: {
-                width: 1,
-                color: '#019680',
-              },
+          // 图表标题
+          title: {
+            text: '任务和结果总数趋势图',
+          },
+          // 图表工具箱
+          toolbox: {
+            feature: {
+              saveAsImage: {}, // 可以添加保存为图片的功能
             },
           },
+          // 图例
+          legend: {
+            data: ['任务总数', '结果总数'],
+          },
+          // 横轴
           xAxis: {
             type: 'category',
-            boundaryGap: false,
-            data: [
-              '6:00',
-              '7:00',
-              '8:00',
-              '9:00',
-              '10:00',
-              '11:00',
-              '12:00',
-              '13:00',
-              '14:00',
-              '15:00',
-              '16:00',
-              '17:00',
-              '18:00',
-              '19:00',
-              '20:00',
-              '21:00',
-              '22:00',
-              '23:00',
-            ],
-            splitLine: {
-              show: true,
-              lineStyle: {
-                width: 1,
-                type: 'solid',
-                color: 'rgba(226,226,226,0.5)',
-              },
-            },
-            axisTick: {
-              show: false,
-            },
+            data: ['2023-01-01', '2023-01-02', '2023-01-03'], // 根据实际日期填充数据
           },
+          // 左纵轴（任务总数）
           yAxis: [
             {
+              name: '任务总数',
               type: 'value',
-              max: 80000,
-              splitNumber: 4,
-              axisTick: {
-                show: false,
-              },
-              splitArea: {
-                show: true,
-                areaStyle: {
-                  color: ['rgba(255,255,255,0.2)', 'rgba(226,226,226,0.2)'],
-                },
-              },
+            },
+            {
+              name: '结果总数',
+              type: 'value',
             },
           ],
-          grid: { left: '1%', right: '1%', top: '2  %', bottom: 0, containLabel: true },
+          // 数据系列
           series: [
             {
-              smooth: true,
-              data: [
-                111, 222, 4000, 18000, 33333, 55555, 66666, 33333, 14000, 36000, 66666, 44444,
-                22222, 11111, 4000, 2000, 500, 333, 222, 111,
-              ],
+              name: '任务总数',
               type: 'line',
-              areaStyle: {},
-              itemStyle: {
-                color: '#5ab1ef',
-              },
+              yAxisIndex: 0, // 指定使用左纵轴
+              data: [10, 20, 15], // 根据实际任务总数填充数据
             },
             {
-              smooth: true,
-              data: [
-                33, 66, 88, 333, 3333, 5000, 18000, 3000, 1200, 13000, 22000, 11000, 2221, 1201,
-                390, 198, 60, 30, 22, 11,
-              ],
+              name: '结果总数',
               type: 'line',
-              areaStyle: {},
-              itemStyle: {
-                color: '#019680',
-              },
+              yAxisIndex: 1, // 指定使用右纵轴
+              data: [500, 1500, 800], // 根据实际结果总数填充数据
             },
           ],
         });
       });
-      return { chartRef };
+      return {
+        chartRef,
+      };
     },
   });
 </script>

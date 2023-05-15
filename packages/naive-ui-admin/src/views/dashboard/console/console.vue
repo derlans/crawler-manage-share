@@ -192,19 +192,75 @@
     </n-grid>
 
     <!--访问量 | 流量趋势-->
-    <VisiTab />
+    <div class="mt-4" v-if="!loading">
+      <NRow :gutter="24">
+        <NCol :span="24">
+          <n-card content-style="padding: 0;" :bordered="false">
+            <n-tabs type="line" size="large" :tabs-padding="20" pane-style="padding: 20px;">
+              <n-tab-pane name="折线图">
+                <TaskResult :value="data.log.countByDayLastMonth" />
+              </n-tab-pane>
+              <n-tab-pane name="任务名:任务数量">
+                <TaskPie
+                  :value="
+                    data.log.countByName.map((v) => {
+                      return { value: v.count, name: v._id };
+                    })
+                  "
+                  name="任务名:任务数量"
+                />
+              </n-tab-pane>
+              <n-tab-pane name="任务名:结果数量">
+                <TaskPie
+                  :value="
+                    data.log.countByName.map((v) => {
+                      return { value: v.resultCount, name: v._id };
+                    })
+                  "
+                  name="任务名:结果数量"
+                />
+              </n-tab-pane>
+              <n-tab-pane name="任务名:结果大小">
+                <TaskPie
+                  :value="
+                    data.log.countByName.map((v) => {
+                      return { value: v.resultSizeCount, name: v._id };
+                    })
+                  "
+                  name="任务名:结果大小"
+                />
+              </n-tab-pane>
+              <n-tab-pane name="任务状态:任务数量">
+                <TaskPie
+                  :value="
+                    data.log.countByStatus.map((v) => {
+                      return { value: v.count, name: statusMap[v._id] };
+                    })
+                  "
+                  name="任务状态:任务数量"
+                />
+              </n-tab-pane>
+            </n-tabs>
+          </n-card>
+        </NCol>
+      </NRow>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
   import { ref, onMounted } from 'vue';
   import { getConsoleInfo } from '@/api/dashboard/console';
-  import VisiTab from './components/VisiTab.vue';
   import { NTag } from 'naive-ui';
   import { CountTo } from '@/components/CountTo/index';
-
+  import TaskResult from './components/TaskResult.vue';
+  import TaskPie from './components/TaskPie.vue';
+  const statusMap = {
+    1: '进行中',
+    2: '已完成',
+    3: '已失败',
+  };
   const loading = ref(true);
   const data = ref<any>({});
-
   onMounted(async () => {
     const res = await getConsoleInfo();
     data.value = res;

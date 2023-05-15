@@ -79,8 +79,6 @@ export class LogService {
       resultCountLastDay: await this.resultCount(userid, lastDay(), now()),
       resultCountLastWeek: await this.resultCount(userid, lastWeek(), now()),
       resultCountLastMonth: await this.resultCount(userid, lastMonth(), now()),
-      resultCountByName: await this.resultCountByName(userid),
-      resultSizeCountByName: await this.resultSizeCountByName(userid),
     }
   }
   async resultCount(userid: string, startTime: Date, endTime: Date) {
@@ -167,6 +165,7 @@ export class LogService {
           _id: '$name',
           count: { $sum: 1 },
           resultCount: { $sum: '$resultCount' },
+          resultSizeCount: { $sum: '$resultSize' },
         },
       },
     ])
