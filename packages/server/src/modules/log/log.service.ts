@@ -76,9 +76,35 @@ export class LogService {
       countByName: await this.countByName(userid),
       countByStatus: await this.countByStatus(userid),
       countByDayLastMonth: await this.countByDay(userid, lastMonth(), now()),
+      resultCountLastDay: await this.resultCount(userid, lastDay(), now()),
+      resultCountLastWeek: await this.resultCount(userid, lastWeek(), now()),
+      resultCountLastMonth: await this.resultCount(userid, lastMonth(), now()),
+      resultCountByName: await this.resultCountByName(userid),
+      resultSizeCountByName: await this.resultSizeCountByName(userid),
     }
   }
-  async resultCount(userid: string) {
+  async resultCount(userid: string, startTime: Date, endTime: Date) {
+    const data = await this.crawlerRunLog.aggregate([
+      {
+        $match: {
+          owner: userid,
+          createdAt: { $gte: startTime, $lte: endTime },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          count: { $sum: '$resultCount' },
+          failCount: { $sum: '$failCount' },
+          successCount: { $sum: '$successCount' },
+        },
+      },
+    ])
+    return data.length > 0
+      ? data[0]
+      : { count: 0, failCount: 0, successCount: 0 }
+  }
+  async resultCountByName(userid: string) {
     return await this.crawlerRunLog.aggregate([
       {
         $match: {
@@ -87,13 +113,13 @@ export class LogService {
       },
       {
         $group: {
-          _id: '$type',
+          _id: '$name',
           count: { $sum: 1 },
         },
       },
     ])
   }
-  async resultSizeCount(userid: string) {
+  async resultSizeCountByName(userid: string) {
     return await this.crawlerRunLog.aggregate([
       {
         $match: {
@@ -102,7 +128,7 @@ export class LogService {
       },
       {
         $group: {
-          _id: '$type',
+          _id: '$name',
           count: { $sum: '$resultSize' },
         },
       },

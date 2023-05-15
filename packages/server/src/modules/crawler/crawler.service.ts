@@ -53,7 +53,7 @@ export class CrawlerService {
     })
 
     return {
-      allCount: totalCount,
+      totalCount,
       lastDayCount,
       lastWeekCount,
       lastMonthCount,

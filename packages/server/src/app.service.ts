@@ -12,17 +12,13 @@ export class AppService {
   ) {}
   // 首页仪表盘 统计项目总数，爬虫总数，任务总数，进行中的任务，失败任务，成功任务，结果总数,一个月内的统计数据
   async console(userid: string) {
-    const projectCount = await this.projectService.count(userid)
-    const crawlerCount = await this.crawlerService.count(userid)
-    const logCount = await this.logService.count(userid)
-    const resultCount = await this.logService.resultCount(userid)
-    const resultSizeCount = await this.logService.resultSizeCount(userid)
+    const project = await this.projectService.count(userid)
+    const crawler = await this.crawlerService.count(userid)
+    const log = await this.logService.count(userid)
     return {
-      projectCount,
-      crawlerCount,
-      logCount,
-      resultCount,
-      resultSizeCount,
+      project: project,
+      crawler: crawler,
+      log: log,
     }
   }
 }

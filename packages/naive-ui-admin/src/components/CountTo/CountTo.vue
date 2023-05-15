@@ -46,7 +46,7 @@
       const source = ref(props.startVal);
       const disabled = ref(false);
       let outputValue = useTransition(source);
-  
+
       const value = computed(() => formatNumber(unref(outputValue)));
 
       watchEffect(() => {
@@ -84,7 +84,7 @@
       }
 
       function formatNumber(num: number | string) {
-        if (!num) {
+        if (num === '') {
           return '';
         }
         const { decimals, decimal, separator, suffix, prefix } = props;
