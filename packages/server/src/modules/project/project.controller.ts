@@ -6,9 +6,15 @@ import { UserDoc } from '@/schemas/user.schema'
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
   @Post('list')
-  async projectList() {
+  async list(@Req() req: Request, @Body() body: any) {
+    const userid = req['user']._id
+    const options = {
+      ...body,
+      query: body.query || {},
+    }
+    options.query.owner = userid
     return {
-      data: { list: await this.projectService.projectList() },
+      data: await this.projectService.find(options),
     }
   }
   @Post('create')

@@ -1,6 +1,6 @@
 import { http } from '@/utils/http/axios';
 import { CrawlerSchema } from '@crawler-manage-share/utils';
-export function getProjectList(params) {
+export function getProjectList(params: FindOptions) {
   return http.request({
     url: '/project/list',
     method: 'POST',

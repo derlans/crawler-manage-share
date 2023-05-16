@@ -4,10 +4,15 @@ import { CrawlerService } from './crawler.service'
 export class CrawlerController {
   constructor(private readonly crawlerService: CrawlerService) {}
   @Post('list')
-  async list(@Req() req: Request) {
+  async list(@Req() req: Request, @Body() body: any) {
     const userid = req['user']._id
+    const options = {
+      ...body,
+      query: body.query || {},
+    }
+    options.query.owner = userid
     return {
-      data: await this.crawlerService.crawlerList(userid),
+      data: await this.crawlerService.find(options),
     }
   }
   @Post('create')

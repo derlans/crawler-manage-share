@@ -1,12 +1,16 @@
 <template>
   <n-card :bordered="false" class="proCard">
+    <BasicForm @register="register" @submit="reloadTable">
+      <template #statusSlot="{ model, field }">
+        <n-input v-model:value="model[field]" />
+      </template>
+    </BasicForm>
     <BasicTable
       :columns="columns"
       :request="loadDataTable"
       :row-key="(row) => row.id"
       ref="actionRef"
       :actionColumn="actionColumn"
-      @update:checked-row-keys="onCheckedRow"
       :scroll-x="1090"
     >
       <template #tableTitle>
@@ -44,6 +48,7 @@
   import { getCrawlerList } from '@/api/crawler';
   import { createLog } from '@/api/log';
   import { useRouter } from 'vue-router';
+  import { FormSchema, useForm } from '@/components/Form';
 
   const router = useRouter();
   // const message = useMessage();
@@ -86,17 +91,51 @@
     },
   });
 
-  const loadDataTable = async () => {
-    const res = await getCrawlerList();
-    return {
-      list: res,
-      total: res.length,
-    };
+  const schemas: FormSchema[] = [
+    {
+      field: 'name',
+      component: 'NInput',
+      label: '爬虫名',
+      componentProps: {
+        placeholder: '爬虫名',
+      },
+      rules: [{ required: false, message: '请输入爬虫名', trigger: ['blur'] }],
+    },
+    // startDate
+    {
+      field: 'startDate',
+      component: 'NDatePicker',
+      label: '开始日期',
+      componentProps: {
+        placeholder: '开始日期',
+      },
+      rules: [{ required: false, message: '请输入开始日期' }],
+    },
+    // endDate
+    {
+      field: 'endDate',
+      component: 'NDatePicker',
+      label: '结束日期',
+      componentProps: {
+        placeholder: '结束日期',
+      },
+      rules: [{ required: false, message: '请输入结束日期' }],
+    },
+  ];
+  const [register, { getFieldsValue }] = useForm({
+    gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
+    labelWidth: 80,
+    schemas,
+  });
+  const loadDataTable = async (v) => {
+    return await getCrawlerList({
+      ...v,
+      query: getFieldsValue(),
+      startDate: getFieldsValue()['startDate'],
+      endDate: getFieldsValue()['endDate'],
+      fuzzyFields: ['name', 'description'],
+    });
   };
-
-  function onCheckedRow(rowKeys) {
-    console.log(rowKeys);
-  }
 
   function reloadTable() {
     actionRef.value.reload();

@@ -1,6 +1,6 @@
 <template>
   <n-card :bordered="false" class="proCard">
-    <BasicForm @register="register" @submit="handleSubmit" @reset="handleReset">
+    <BasicForm @register="register" @submit="handleSubmit">
       <template #statusSlot="{ model, field }">
         <n-input v-model:value="model[field]" />
       </template>
@@ -84,7 +84,36 @@
       componentProps: {
         placeholder: '项目名',
       },
-      rules: [{ required: true, message: '请输入项目名', trigger: ['blur'] }],
+      rules: [{ required: false, message: '请输入项目名', trigger: ['blur'] }],
+    },
+    {
+      field: 'description',
+      component: 'NInput',
+      label: '项目描述',
+      componentProps: {
+        placeholder: '项目描述',
+      },
+      rules: [{ required: false, message: '请输入项目描述', trigger: ['blur'] }],
+    },
+    // startDate
+    {
+      field: 'startDate',
+      component: 'NDatePicker',
+      label: '开始日期',
+      componentProps: {
+        placeholder: '开始日期',
+      },
+      rules: [{ required: false, message: '请输入开始日期' }],
+    },
+    // endDate
+    {
+      field: 'endDate',
+      component: 'NDatePicker',
+      label: '结束日期',
+      componentProps: {
+        placeholder: '结束日期',
+      },
+      rules: [{ required: false, message: '请输入结束日期' }],
     },
   ];
 
@@ -98,11 +127,6 @@
   const formParams = reactive({
     name: '',
     description: '',
-  });
-
-  const params = ref({
-    pageSize: 5,
-    name: 'xiaoMa',
   });
 
   const actionColumn = reactive({
@@ -134,7 +158,7 @@
     },
   });
 
-  const [register, {}] = useForm({
+  const [register, { getFieldsValue }] = useForm({
     gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
     labelWidth: 80,
     schemas,
@@ -144,8 +168,14 @@
     showModal.value = true;
   }
 
-  const loadDataTable = async (res) => {
-    return await getProjectList({ ...formParams, ...params.value, ...res });
+  const loadDataTable = async (v) => {
+    return await getProjectList({
+      ...v,
+      query: getFieldsValue(),
+      startDate: getFieldsValue()['startDate'],
+      endDate: getFieldsValue()['endDate'],
+      fuzzyFields: ['name', 'description'],
+    });
   };
 
   function onCheckedRow(rowKeys) {
@@ -184,13 +214,8 @@
     window['$message'].info('点击了删除');
   }
 
-  function handleSubmit(values: Recordable) {
-    console.log(values);
+  function handleSubmit() {
     reloadTable();
-  }
-
-  function handleReset(values: Recordable) {
-    console.log(values);
   }
 </script>
 

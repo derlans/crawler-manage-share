@@ -1,5 +1,10 @@
 <template>
   <n-card :bordered="false" class="proCard">
+    <BasicForm @register="register" @submit="handleSubmit">
+      <template #statusSlot="{ model, field }">
+        <n-input v-model:value="model[field]" />
+      </template>
+    </BasicForm>
     <BasicTable
       :columns="columns"
       :request="loadDataTable"
@@ -43,6 +48,7 @@
   import { PlusOutlined } from '@vicons/antd';
   import { getLogList, getJsonFile } from '@/api/log';
   import { saveJsonFile } from '@/utils/save';
+  import { FormSchema, useForm } from '@/components/Form';
 
   // const router = useRouter();
   // const message = useMessage();
@@ -96,15 +102,51 @@
       });
     },
   });
-
-  const loadDataTable = async () => {
-    const res = await getLogList();
-    return {
-      list: res,
-      total: res.length,
-    };
+  const schemas: FormSchema[] = [
+    {
+      field: 'name',
+      component: 'NInput',
+      label: '任务名',
+      componentProps: {
+        placeholder: '任务名',
+      },
+      rules: [{ required: false, message: '请输入任务名', trigger: ['blur'] }],
+    },
+    // startDate
+    {
+      field: 'startDate',
+      component: 'NDatePicker',
+      label: '开始日期',
+      componentProps: {
+        placeholder: '开始日期',
+      },
+      rules: [{ required: false, message: '请输入开始日期' }],
+    },
+    // endDate
+    {
+      field: 'endDate',
+      component: 'NDatePicker',
+      label: '结束日期',
+      componentProps: {
+        placeholder: '结束日期',
+      },
+      rules: [{ required: false, message: '请输入结束日期' }],
+    },
+  ];
+  const [register, { getFieldsValue }] = useForm({
+    gridProps: { cols: '1 s:1 m:2 l:3 xl:4 2xl:4' },
+    labelWidth: 80,
+    schemas,
+  });
+  const loadDataTable = async (v) => {
+    return await getLogList({
+      ...v,
+      query: getFieldsValue(),
+      startDate: getFieldsValue()['startDate'],
+      endDate: getFieldsValue()['endDate'],
+      fuzzyFields: ['name', 'description'],
+    });
   };
-
   function onCheckedRow(rowKeys) {
     console.log(rowKeys);
   }
@@ -115,6 +157,9 @@
 
   function confirmForm(e) {
     e.preventDefault();
+  }
+  function handleSubmit() {
+    reloadTable();
   }
 </script>
 

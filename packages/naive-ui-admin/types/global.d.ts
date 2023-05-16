@@ -53,6 +53,15 @@ declare global {
     path?: EventTarget[];
   }
 
+  declare interface FindOptions {
+    query?: Record<string, any>;
+    page?: number;
+    pageSize?: number;
+    startDate?: Date;
+    endDate?: Date;
+    fuzzyFields?: string[];
+  }
+
   interface ImportMetaEnv extends ViteEnv {
     __: unknown;
   }

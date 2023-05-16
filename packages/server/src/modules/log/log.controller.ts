@@ -16,10 +16,15 @@ export class LogController {
     private readonly crawlerService: CrawlerService,
   ) {}
   @Post('list')
-  async list(@Req() req: Request) {
+  async list(@Req() req: Request, @Body() body: any) {
     const userid = req['user']._id
+    const options = {
+      ...body,
+      query: body.query || {},
+    }
+    options.query.owner = userid
     return {
-      data: await this.logService.logList(userid),
+      data: await this.logService.find(options),
     }
   }
   @Post('create')

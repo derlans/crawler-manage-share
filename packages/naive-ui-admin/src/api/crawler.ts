@@ -1,9 +1,10 @@
 import { http } from '@/utils/http/axios';
 // import { CrawlerSchema } from '@crawler-manage-share/utils';
-export function getCrawlerList() {
+export function getCrawlerList(params: FindOptions) {
   return http.request({
     url: '/crawler/list',
     method: 'POST',
+    params,
   });
 }
 

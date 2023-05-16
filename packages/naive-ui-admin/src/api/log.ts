@@ -1,8 +1,9 @@
 import { http } from '@/utils/http/axios';
-export function getLogList() {
+export function getLogList(params: FindOptions) {
   return http.request({
     url: '/log/list',
     method: 'POST',
+    params,
   });
 }
 

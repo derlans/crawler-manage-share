@@ -5,6 +5,7 @@ import { Model } from 'mongoose'
 import { CrawlerService } from '../crawler/crawler.service'
 import { FileService } from '../file/file.service'
 import { lastDay, lastMonth, lastWeek, now } from '@/utils/time'
+import { FindOptions, commonFind } from '@/utils/model'
 @Injectable()
 export class LogService {
   constructor(
@@ -15,6 +16,14 @@ export class LogService {
   ) {}
   async logList(userid: string) {
     return await this.crawlerRunLog.find({ owner: userid })
+  }
+  // 查找，支持分页,支持name模糊查询,支持时间范围查询
+  async find(findOptions: FindOptions) {
+    const res = await commonFind(this.crawlerRunLog, findOptions, [
+      'name',
+      'description',
+    ])
+    return res
   }
   async create(userid: string, body: any) {
     const crawlerRun = await this.crawlerService.findOneById(body.crawlerRun)

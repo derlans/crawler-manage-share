@@ -5,6 +5,7 @@ import { Model } from 'mongoose'
 import { Crawler } from '@crawler-manage-share/utils'
 import axios from 'axios'
 import { lastDay, lastMonth, lastWeek } from '@/utils/time'
+import { FindOptions, commonFind } from '@/utils/model'
 @Injectable()
 export class CrawlerService {
   constructor(
@@ -13,6 +14,13 @@ export class CrawlerService {
   ) {}
   async crawlerList(userid: string) {
     return await this.crawlerRunModel.find({ owner: userid })
+  }
+  // 查找，支持分页
+  async find(findOptions: FindOptions) {
+    return await commonFind(this.crawlerRunModel, findOptions, [
+      'name',
+      'description',
+    ])
   }
   async createCrawler(v: any, userid: string) {
     return await this.crawlerRunModel.create({ ...v, owner: userid })

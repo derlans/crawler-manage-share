@@ -3,7 +3,7 @@ import { h } from 'vue';
 
 export const columns = [
   {
-    title: '爬虫名',
+    title: '任务名',
     key: 'name',
     width: 100,
   },
@@ -11,11 +11,9 @@ export const columns = [
     title: '创建时间',
     key: 'createdAt',
     width: 100,
-  },
-  {
-    title: '完成时间',
-    key: 'endTime',
-    width: 100,
+    render(row) {
+      return new Date(row.createdAt).toLocaleString();
+    },
   },
   {
     title: '总耗时(s)',

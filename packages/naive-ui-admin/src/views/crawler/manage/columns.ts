@@ -10,13 +10,24 @@ export const columns = [
     width: 100,
   },
   {
-    title: '所属项目id',
-    key: 'project',
+    title: '运行次数',
+    key: 'runCount',
     width: 100,
   },
   {
     title: '创建时间',
     key: 'createdAt',
+    render(row) {
+      return new Date(row.createdAt).toLocaleString();
+    },
     width: 160,
+  },
+  {
+    title: '最后运行时间',
+    key: 'lastRunAt',
+    width: 160,
+    render(row) {
+      return new Date(row.lastRunAt).toLocaleString();
+    },
   },
 ];
