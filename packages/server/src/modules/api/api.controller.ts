@@ -16,4 +16,23 @@ export class ApiController {
       data: await this.apiService.find(options),
     }
   }
+  @Post('create')
+  async create(@Req() req: Request, @Body() body: any) {
+    const userid = req['user']._id
+    const options = {
+      ...body,
+      owner: userid,
+    }
+    return {
+      data: await this.apiService.create(options),
+    }
+  }
+  @Post('detail')
+  async detail(@Req() req: Request, @Body() body: any) {
+    const userid = req['user']._id
+    const _id = body._id
+    return {
+      data: await this.apiService.findOne({ _id, owner: userid }),
+    }
+  }
 }

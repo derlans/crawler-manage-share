@@ -17,4 +17,7 @@ export class ApiService {
   async find(findOptions: FindOptions) {
     return await commonFind(this.apiModel, findOptions)
   }
+  async findOne(query: any) {
+    return await this.apiModel.findOne(query)
+  }
 }

@@ -13,6 +13,9 @@ export class Api extends Document {
   owner: Types.ObjectId
   // 详细内容 富文本
   @Prop({ required: true })
-  content: string
+  detail: string
+  // swagger json
+  @Prop({ required: true })
+  swagger: string
 }
 export const ApiSchema = SchemaFactory.createForClass(Api)

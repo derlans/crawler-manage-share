@@ -26,20 +26,20 @@ const routes: Array<RouteRecordRaw> = [
       sort: 5,
     },
     children: [
-      // {
-      //   path: 'manage',
-      //   name: 'api-manage',
-      //   meta: {
-      //     title: '接口管理',
-      //   },
-      //   component: () => import('@/views/api/manage/api-manage.vue'),
-      // },
       {
-        path: 'detail',
+        path: 'manage',
+        name: 'api-manage',
+        meta: {
+          title: '接口管理',
+        },
+        component: () => import('@/views/api/manage/api-manage.vue'),
+      },
+      {
+        path: 'detail/:id',
         name: 'api-detail',
         meta: {
           title: '接口详情',
-          hidden: false,
+          hidden: true,
           activeMenu: 'basic-api',
         },
         component: () => import('@/views/api/detail/api-detail.vue'),
