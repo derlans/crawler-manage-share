@@ -110,20 +110,20 @@
     {
       field: 'name',
       component: 'NInput',
-      label: '项目名',
+      label: '名字',
       componentProps: {
-        placeholder: '项目名',
+        placeholder: '名字',
       },
-      rules: [{ required: false, message: '请输入项目名', trigger: ['blur'] }],
+      rules: [{ required: false, message: '请输入名字', trigger: ['blur'] }],
     },
     {
       field: 'description',
       component: 'NInput',
-      label: '项目描述',
+      label: '描述',
       componentProps: {
-        placeholder: '项目描述',
+        placeholder: '描述',
       },
-      rules: [{ required: false, message: '请输入项目描述', trigger: ['blur'] }],
+      rules: [{ required: false, message: '请输入描述', trigger: ['blur'] }],
     },
     // startDate
     {

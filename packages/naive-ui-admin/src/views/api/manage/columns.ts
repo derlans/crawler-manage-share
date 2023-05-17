@@ -1,10 +1,5 @@
 export const columns = [
   {
-    title: 'id',
-    key: '_id',
-    width: 100,
-  },
-  {
     title: '名称',
     key: 'name',
     width: 100,
