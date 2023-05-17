@@ -112,6 +112,22 @@
       },
       rules: [{ required: false, message: '请输入任务名', trigger: ['blur'] }],
     },
+    // 状态
+    {
+      field: 'status',
+      component: 'NSelect',
+      label: '状态',
+      defaultValue: 1,
+      componentProps: {
+        placeholder: '状态',
+        options: [
+          { label: '成功', value: 2 },
+          { label: '失败', value: 3 },
+          { label: '进行中', value: 1 },
+        ],
+      },
+      rules: [{ required: false, message: '请选择状态' }],
+    },
     // startDate
     {
       field: 'startDate',

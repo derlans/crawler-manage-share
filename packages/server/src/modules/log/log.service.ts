@@ -22,6 +22,7 @@ export class LogService {
     const res = await commonFind(this.crawlerRunLog, findOptions, [
       'name',
       'description',
+      'status',
     ])
     return res
   }
