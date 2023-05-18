@@ -16,23 +16,17 @@ export function createCrawler(params) {
   });
 }
 
-// export function getCrawlerDetail(params) {
-//   return http.request<{
-//     crawlerList: CrawlerSchema[];
-//     name: string;
-//     description: string;
-//     createdAt: string;
-//     updatedAt: string;
-//   }>({
-//     url: '/crawler/detail',
-//     method: 'POST',
-//     params,
-//   });
-// }
-
 export function updateCrawler(params) {
   return http.request({
     url: '/crawler/update',
+    method: 'POST',
+    params,
+  });
+}
+
+export function testRunCrawler(params) {
+  return http.request({
+    url: '/crawler/testRun',
     method: 'POST',
     params,
   });

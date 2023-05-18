@@ -6,6 +6,8 @@ import { CrawlerService } from '../crawler/crawler.service'
 import { FileService } from '../file/file.service'
 import { lastDay, lastMonth, lastWeek, now } from '@/utils/time'
 import { FindOptions, commonFind } from '@/utils/model'
+import axios from 'axios'
+import { pythonServePath } from '@/constants'
 @Injectable()
 export class LogService {
   constructor(
@@ -37,18 +39,23 @@ export class LogService {
       crawlerRun: body.crawlerRun,
       name: crawlerRun.name,
     })
-    this.crawlerService.runCrawler(crawlerRun).then(async (res) => {
-      const [result, crawler] = res
-      await this.crawlerRunLog.findByIdAndUpdate(log._id, {
-        status: 2,
-        endTime: new Date(),
-        resultCount: crawler.resultCount(),
-        successCount: crawler.successCount(),
-        failCount: crawler.failCount(),
-        resultSize: crawler.resultSize(),
+    if (crawlerRun.crawler.language === 'python') {
+      this.crawlerService.runPythonCrawler(log._id, crawlerRun).catch(() => {})
+    } else {
+      this.crawlerService.runCrawler(crawlerRun).then(async (res) => {
+        const [result, crawler] = res
+        await this.crawlerRunLog.findByIdAndUpdate(log._id, {
+          status: 2,
+          endTime: new Date(),
+          resultCount: crawler.resultCount(),
+          successCount: crawler.successCount(),
+          failCount: crawler.failCount(),
+          resultSize: crawler.resultSize(),
+        })
+        await this.fileService.saveJson(log._id, result)
       })
-      await this.fileService.saveJson(log._id, result)
-    })
+    }
+
     return log
   }
   async findOneById(id: string) {
@@ -196,5 +203,16 @@ export class LogService {
         },
       },
     ])
+  }
+  async notify(logid: string, result: any[]) {
+    await this.crawlerRunLog.findByIdAndUpdate(logid, {
+      status: 2,
+      endTime: new Date(),
+      resultCount: result.length,
+      successCount: result.filter((item) => item.isSuccess).length,
+      failCount: result.filter((item) => !item.isSuccess).length,
+      resultSize: JSON.stringify(result).length,
+    })
+    await this.fileService.saveJson(logid, result)
   }
 }

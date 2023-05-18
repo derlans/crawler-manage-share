@@ -22,4 +22,10 @@ export class CrawlerController {
       data: (await this.crawlerService.createCrawler(body, userid))['_id'],
     }
   }
+  @Post('testRun')
+  async testRun(@Body() body: any) {
+    return {
+      data: await this.crawlerService.testRun(body),
+    }
+  }
 }

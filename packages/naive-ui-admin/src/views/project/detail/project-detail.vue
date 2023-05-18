@@ -15,13 +15,21 @@
       :scroll-x="1090"
     >
       <template #tableTitle>
-        <n-button type="primary" @click="addTable">
+        <n-button type="primary" @click="() => addTable('javascript')" style="margin-right: 10px">
           <template #icon>
             <n-icon>
               <PlusOutlined />
             </n-icon>
           </template>
-          新建
+          新建javascript爬虫
+        </n-button>
+        <n-button type="success" @click="() => addTable('python')">
+          <template #icon>
+            <n-icon>
+              <PlusOutlined />
+            </n-icon>
+          </template>
+          新建python爬虫
         </n-button>
       </template>
 
@@ -37,7 +45,7 @@
       title="新建"
       style="width: 90vw; margin: 50px auto"
     >
-      <crawler-edit v-model:value="crawlerForm" />
+      <crawler-edit v-model:value="crawlerForm" :key="crawlerForm.language" />
       <template #action>
         <n-space>
           <n-button @click="() => (showModal = false)">取消</n-button>
@@ -52,7 +60,7 @@
       title="运行爬虫"
       style="width: 90vw; margin: 50px auto"
     >
-      <crawler-run :value="crawlerRunForm" :projectid="projectId" />
+      <crawler-run :value="crawlerRunForm" :projectid="projectId" :key="projectId" />
       <template #action>
         <n-space>
           <n-button @click="() => (showCrawlerModal = false)">取消</n-button>
@@ -73,6 +81,7 @@
     defaultCrawlerSchema,
     CrawlerSchema,
     isAsyncFunctionString,
+    defaultCrawlerSchemaMap,
   } from '@crawler-manage-share/utils';
   import crawlerEdit from '@/views/crawler/crawler-edit.vue';
   import crawlerRun from '@/views/crawler/crawler-run.vue';
@@ -121,7 +130,7 @@
             },
           },
           {
-            label: '运行',
+            label: '创建任务',
             onClick: () => {
               showCrawlerModal.value = true;
               crawlerRunForm.value = record;
@@ -132,8 +141,9 @@
     },
   });
 
-  function addTable() {
+  function addTable(type: typeof crawlerForm.value.language) {
     showModal.value = true;
+    crawlerForm.value = { ...defaultCrawlerSchemaMap[type] };
   }
 
   const loadDataTable = async () => {
@@ -155,8 +165,11 @@
       window['$message'].error('请输入爬虫名称');
       return;
     }
-    // 检查fn是不是fnstring
-    if (!isAsyncFunctionString(crawlerForm.value.fn)) {
+    // 检查code是不是fnstring
+    if (
+      crawlerForm.value.language === 'javascript' &&
+      !isAsyncFunctionString(crawlerForm.value.code)
+    ) {
       window['$message'].error('爬虫代码格式错误');
       return;
     }

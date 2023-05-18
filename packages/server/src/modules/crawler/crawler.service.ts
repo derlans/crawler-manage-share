@@ -6,6 +6,7 @@ import { Crawler } from '@crawler-manage-share/utils'
 import axios from 'axios'
 import { lastDay, lastMonth, lastWeek } from '@/utils/time'
 import { FindOptions, commonFind } from '@/utils/model'
+import { pythonServePath } from '@/constants'
 @Injectable()
 export class CrawlerService {
   constructor(
@@ -31,11 +32,22 @@ export class CrawlerService {
   async updateOneById(id: string, v: any) {
     return await this.crawlerRunModel.findByIdAndUpdate(id, v)
   }
-  async runCrawler(crawlerRun: CrawlerRunDoc): Promise<[any, Crawler]> {
+  async runCrawler(crawlerRun: CrawlerRunDoc): Promise<[any[], Crawler]> {
     const { crawler: crawlerSchema, runOptions } = crawlerRun
-    const crawler = new Crawler(crawlerSchema.fn, { envParams: { axios } })
+    const crawler = new Crawler(crawlerSchema.code as any, {
+      envParams: { axios },
+    })
     const result = await crawler.run(runOptions)
     return [result, crawler]
+  }
+  async runPythonCrawler(logid: string, crawlerRun: CrawlerRunDoc) {
+    const { crawler: crawlerSchema, runOptions } = crawlerRun
+    const res = await axios.post(pythonServePath.execute, {
+      code: crawlerSchema.code,
+      ...runOptions,
+      _id: logid,
+    })
+    return res.data
   }
   async count(userid: string) {
     const totalCount = await this.crawlerRunModel.countDocuments({
@@ -66,5 +78,9 @@ export class CrawlerService {
       lastWeekCount,
       lastMonthCount,
     }
+  }
+  async testRun(v: any) {
+    const res = await axios.post(pythonServePath.test, v)
+    return res.data.result
   }
 }

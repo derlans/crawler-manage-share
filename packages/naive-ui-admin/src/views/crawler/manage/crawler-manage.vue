@@ -13,17 +13,6 @@
       :actionColumn="actionColumn"
       :scroll-x="1090"
     >
-      <template #tableTitle>
-        <n-button type="primary">
-          <template #icon>
-            <n-icon>
-              <PlusOutlined />
-            </n-icon>
-          </template>
-          新建
-        </n-button>
-      </template>
-
       <template #toolbar>
         <n-button type="primary" @click="reloadTable">刷新数据</n-button>
       </template>
@@ -44,7 +33,6 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { columns } from './columns';
-  import { PlusOutlined } from '@vicons/antd';
   import { getCrawlerList } from '@/api/crawler';
   import { createLog } from '@/api/log';
   import { useRouter } from 'vue-router';

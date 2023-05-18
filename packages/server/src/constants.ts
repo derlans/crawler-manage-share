@@ -9,4 +9,14 @@ export const whitelist = [
   '/api/user/login',
   '/api/user/register',
   '/api/crawler/test',
+  '/api/log/notify',
 ]
+
+export const pythonServePath = {
+  // python服务地址
+  url: 'http://127.0.0.1:5000',
+  // 测试执行python脚本的接口
+  test: 'http://127.0.0.1:5000/execute/result',
+  // 执行python脚本的接口
+  execute: 'http://127.0.0.1:5000/execute',
+}

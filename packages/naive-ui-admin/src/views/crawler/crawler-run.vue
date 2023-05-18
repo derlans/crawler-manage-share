@@ -9,7 +9,7 @@
         <n-form-item label="爬虫代码" path="fnString" v-if="false">
           <codemirror
             disabled
-            v-model="form.fn"
+            v-model="form.code"
             :style="{ height: '300px', width: '100%' }"
             :autofocus="true"
             :indent-with-tab="true"
@@ -126,7 +126,7 @@
   import { NForm } from 'naive-ui';
   import VueForm from '@lljj/vue3-form-naive';
   import { saveJsonFile } from '@/utils/save';
-  import { createCrawler as createCrawlerReq } from '@/api/crawler';
+  import { createCrawler as createCrawlerReq, testRunCrawler } from '@/api/crawler';
 
   import axios from 'axios';
   import { Crawler, generateParams, generateParamsByRange } from '@crawler-manage-share/utils';
@@ -139,8 +139,9 @@
     value: {
       name: string;
       description: string;
-      fn: string;
+      code: string;
       userParamsSchema: string;
+      language: 'javascript' | 'python';
     };
     projectid?: string;
   }>();
@@ -157,7 +158,6 @@
   });
   const userParams = ref({});
   const crawlerRunName = ref(Props.value.name + '任务1');
-  const crawler = new Crawler(form.value.fn as any, { envParams });
   const range = ref({ start: 0, end: 0 });
   const runOptions = ref({ concurrency: 2, useCustomInput: false, timeout: 10000, retry: 0 });
   const customInput = ref({
@@ -188,11 +188,21 @@
   });
   const runCrawler = async () => {
     showLoading.value = true;
-    const res = await crawler.run({
-      concurrency: runOptions.value.concurrency,
-      allUserParams: allUserParams.value.slice(0, 100),
-      timeout: runOptions.value.timeout,
-    });
+    let res: any = [];
+    if (form.value.language === 'python') {
+      res = await testRunCrawler({
+        code: form.value.code,
+        allUserParams: allUserParams.value.slice(0, 10),
+      });
+    } else {
+      const crawler = new Crawler(form.value.code as any, { envParams });
+      res = await crawler.run({
+        concurrency: runOptions.value.concurrency,
+        allUserParams: allUserParams.value.slice(0, 10),
+        timeout: runOptions.value.timeout,
+      });
+    }
+
     showLoading.value = false;
     tryResult.value = JSON.stringify(res, null, 2);
   };

@@ -1,3 +1,6 @@
+import { NTag } from 'naive-ui';
+import { h } from 'vue';
+
 export const columns = [
   {
     title: 'ID',
@@ -13,6 +16,18 @@ export const columns = [
     title: '运行次数',
     key: 'runCount',
     width: 100,
+  },
+  {
+    title: '爬虫语言',
+    key: 'crawler.language',
+    width: 100,
+    render(row) {
+      const { language } = row.crawler;
+      if (language === 'python') {
+        return h(NTag, { type: 'success' }, { default: () => 'Python' });
+      }
+      return h(NTag, { type: 'warning' }, { default: () => 'JavaScript' });
+    },
   },
   {
     title: '创建时间',

@@ -52,6 +52,7 @@ export async function commonFind<T extends Model<any>>(
   }
   const list = await model
     .find(filterQuery)
+    .sort({ createdAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .exec()

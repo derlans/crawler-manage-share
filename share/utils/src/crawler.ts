@@ -23,6 +23,7 @@ export interface CrawlerResult {
   msg: string
   date: number
   userParams: UserParams
+  executionTime: number
 }
 export class Crawler {
   fnString: FnString
@@ -42,6 +43,7 @@ export class Crawler {
     this.envParams = crawlerOptions.envParams
   }
   runOne(userParams: UserParams, timeout = 10000): Promise<CrawlerResult> {
+    const now = Date.now()
     return new Promise((resolve) => {
       const time = setTimeout(() => {
         resolve({
@@ -51,6 +53,7 @@ export class Crawler {
           isSuccess: false,
           date: new Date().getTime(),
           userParams,
+          executionTime: timeout,
         })
       }, timeout)
       this.fn(this.envParams, userParams)
@@ -63,6 +66,7 @@ export class Crawler {
             isSuccess: true,
             date: new Date().getTime(),
             userParams,
+            executionTime: Date.now() - now,
           })
         })
         .catch((error) => {
@@ -74,6 +78,7 @@ export class Crawler {
             isSuccess: false,
             date: new Date().getTime(),
             userParams,
+            executionTime: Date.now() - now,
           })
         })
     })
@@ -154,16 +159,18 @@ export const generateParamsByRange = (
 export interface CrawlerSchema {
   name: string
   description: string
-  fn: FnString
+  code: string
   userParamsSchema: string
+  // 语言 default javascript
+  language: 'javascript' | 'python'
 }
 
 export const defaultCrawlerSchema: CrawlerSchema = {
   name: 'xx爬虫',
   description: '爬取xx网站的xx数据',
-  fn: `async function fn(env, user) {
+  code: `async function fn(env, user) {
     
-}` as FnString,
+}`,
   userParamsSchema: JSON.stringify(
     {
       title: '微博搜索',
@@ -180,4 +187,65 @@ export const defaultCrawlerSchema: CrawlerSchema = {
     null,
     2,
   ),
+  language: 'javascript',
+}
+
+export const defaultCrawlerSchemaPython: CrawlerSchema = {
+  name: 'xx爬虫',
+  description: '爬取xx网站的xx数据',
+  code: `# encoding:utf-8
+import requests
+import re
+def deepSearchJSON(jsonObj, key):
+    results = []
+    def search(obj):
+        for prop in obj:
+            if prop == key:
+                results.append(re.sub('[^\u4e00-\u9fa5]', '', str(obj[prop])))
+            elif isinstance(obj[prop], dict):
+                search(obj[prop])
+            elif isinstance(obj[prop], list):
+                for item in obj[prop]:
+                    if isinstance(item, dict):
+                        search(item)
+    search(jsonObj)
+    return results
+
+def fn(q, page):
+    url = 'https://m.weibo.cn/api/container/getIndex'
+    params = {
+        'containerid': '100103type=1&q=' + q,
+        'page_type': 'searchall',
+        'page': page
+    }
+
+    response = requests.get(url, params=params)
+    response_json = response.json()
+    return  deepSearchJSON(response_json['data'], 'text')
+
+# 调用爬虫函数
+data = fn(params.get('q'),params.get('page'))
+  `,
+  userParamsSchema: JSON.stringify(
+    {
+      title: '微博搜索',
+      description: 'A simple form example.',
+      type: 'object',
+      required: ['q'],
+      properties: {
+        q: {
+          type: 'string',
+          title: '查询的字段',
+        },
+      },
+    },
+    null,
+    2,
+  ),
+  language: 'python',
+}
+
+export const defaultCrawlerSchemaMap = {
+  javascript: defaultCrawlerSchema,
+  python: defaultCrawlerSchemaPython,
 }
