@@ -30,7 +30,7 @@ export class LogController {
   @Post('create')
   async create(@Body() body: any, @Req() req: Request) {
     const userid = req['user']._id
-    const logid = await this.logService.create(userid, body)
+    const logid = await this.logService.create(userid, body.crawlerRun)
     return {
       data: logid,
     }

@@ -1,15 +1,15 @@
 {
-  "name": "@crawler-manage-share/utils", 
-  "version": "1.0.0", 
+  "name": "@crawler-manage-share/utils",
+  "version": "1.0.0",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
     "build:watch": "vite build --watch"
   },
-  "main": "./dist/index.cjs.js", 
+  "main": "./dist/index.cjs.js",
   "module": "./dist/index.es.js",
-  "types": "index.ts", 
+  "types": "index.ts",
   "exports": {
     ".": {
       "require": "./dist/index.cjs.js",
@@ -24,7 +24,8 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21",
-    "axios": "^1.3.5"
+    "axios": "^1.3.5",
+    "cron-parser": "^4.8.1",
+    "lodash-es": "^4.17.21"
   }
 }

@@ -6,8 +6,6 @@ import { CrawlerService } from '../crawler/crawler.service'
 import { FileService } from '../file/file.service'
 import { lastDay, lastMonth, lastWeek, now } from '@/utils/time'
 import { FindOptions, commonFind } from '@/utils/model'
-import axios from 'axios'
-import { pythonServePath } from '@/constants'
 @Injectable()
 export class LogService {
   constructor(
@@ -28,15 +26,15 @@ export class LogService {
     ])
     return res
   }
-  async create(userid: string, body: any) {
-    const crawlerRun = await this.crawlerService.findOneById(body.crawlerRun)
-    await this.crawlerService.updateOneById(body.crawlerRun, {
+  async create(userid: string, crawlerRunid: string) {
+    const crawlerRun = await this.crawlerService.findOneById(crawlerRunid)
+    await this.crawlerService.updateOneById(crawlerRunid, {
       runCount: crawlerRun.runCount + 1,
       lastRunAt: new Date(),
     })
     const log = await this.crawlerRunLog.create({
       owner: userid,
-      crawlerRun: body.crawlerRun,
+      crawlerRun: crawlerRunid,
       name: crawlerRun.name,
     })
     if (crawlerRun.crawler.language === 'python') {

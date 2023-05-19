@@ -1,6 +1,6 @@
 <template>
   <n-card :bordered="false" class="proCard">
-    <BasicForm @register="register" @submit="reloadTable">
+    <BasicForm @register="register" @submit="handleSubmit">
       <template #statusSlot="{ model, field }">
         <n-input v-model:value="model[field]" />
       </template>
@@ -13,24 +13,23 @@
       :actionColumn="actionColumn"
       :scroll-x="1090"
     >
+      <template #tableTitle>
+        <n-button type="primary">
+          <template #icon>
+            <n-icon>
+              <PlusOutlined />
+            </n-icon>
+          </template>
+          新建
+        </n-button>
+      </template>
+
       <template #toolbar>
         <n-button type="primary" @click="reloadTable">刷新数据</n-button>
       </template>
     </BasicTable>
 
-    <n-modal v-model:show="showModal" :show-icon="false" preset="dialog" title="新建定时任务">
-      <!-- crom form -->
-      <n-form>
-        <n-form-item label="名称" label-width="100px">
-          <n-input v-model:value="cronForm.name" />
-        </n-form-item>
-        <n-form-item label="定时表达式" label-width="100px">
-          <n-input v-model:value="cronForm.schedule" />
-        </n-form-item>
-        <n-form-item label="描述" label-width="100px">
-          <n-input v-model:value="cronForm.description" />
-        </n-form-item>
-      </n-form>
+    <n-modal v-model:show="showModal" :show-icon="false" preset="diacron" title="新建">
       <template #action>
         <n-space>
           <n-button @click="() => (showModal = false)">取消</n-button>
@@ -45,23 +44,16 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { columns } from './columns';
-  import { getCrawlerList } from '@/api/crawler';
-  import { createLog } from '@/api/log';
-  import { useRouter } from 'vue-router';
+  import { PlusOutlined } from '@vicons/antd';
+  import { getCronList, stopCron, startCron } from '@/api/cron';
+  // import { saveJsonFile } from '@/utils/save';
   import { FormSchema, useForm } from '@/components/Form';
-  import { isCron } from '@crawler-manage-share/utils';
-  import { createCron } from '@/api/cron';
-  const router = useRouter();
+
+  // const router = useRouter();
   // const message = useMessage();
   const actionRef = ref();
 
   const showModal = ref(false);
-  const cronForm = ref({
-    name: '',
-    schedule: '',
-    description: '',
-    crawlerRun: '',
-  });
   const formBtnLoading = ref(false);
 
   const actionColumn = reactive({
@@ -74,52 +66,73 @@
         style: 'button',
         actions: [
           {
-            label: '删除',
-            type: 'warning',
+            label: '启用',
+            type: 'primary',
             style: 'margin-right: 10px;',
-            onClick: () => {
-              // window['$message'].info(`您点击了，${record.name} 按钮`);
+            onClick: async () => {
+              if (record.status === 1) {
+                window['$message'].error('任务正在进行中');
+                return;
+              }
+              await startCron({ _id: record._id });
+              reloadTable();
             },
           },
           {
-            label: '服务器运行',
-            type: 'success',
+            label: '停止',
+            type: 'error',
             style: 'margin-right: 10px;',
             onClick: async () => {
-              const { _id: logid } = await createLog({
-                crawlerRun: record._id,
-              });
-              router.push({
-                path: '/log/manage',
-                query: {
-                  id: logid,
-                },
-              });
+              if (record.status === 0) {
+                window['$message'].error('任务已停止');
+                return;
+              }
+              await stopCron({ _id: record._id });
+              reloadTable();
             },
           },
           {
-            label: '创建定时任务',
-            type: 'info',
-            style: 'margin-right: 10px;',
+            label: '导出成功数据',
             onClick: async () => {
-              showModal.value = true;
-              cronForm.value.crawlerRun = record._id;
+              // const res = await getJsonFile(record._id);
+              // const data = res.data
+              //   .filter((item) => {
+              //     return item.isSuccess;
+              //   })
+              //   .map((item) => {
+              //     return item.data;
+              //   });
+              // saveJsonFile(data, record.name + '-success');
             },
           },
         ],
       });
     },
   });
-
   const schemas: FormSchema[] = [
     {
       field: 'name',
       component: 'NInput',
-      label: '爬虫名',
+      label: '任务名',
       componentProps: {
-        placeholder: '爬虫名',
+        placeholder: '任务名',
       },
-      rules: [{ required: false, message: '请输入爬虫名', trigger: ['blur'] }],
+      rules: [{ required: false, message: '请输入任务名', trigger: ['blur'] }],
+    },
+    // 状态
+    {
+      field: 'status',
+      component: 'NSelect',
+      label: '状态',
+      defaultValue: 1,
+      componentProps: {
+        placeholder: '状态',
+        options: [
+          { label: '已启用', value: 1 },
+          { label: '已停止', value: 0 },
+        ],
+      },
+      rules: [{ required: false, message: '请选择状态' }],
     },
     // startDate
     {
@@ -148,7 +161,7 @@
     schemas,
   });
   const loadDataTable = async (v) => {
-    return await getCrawlerList({
+    return await getCronList({
       ...v,
       query: getFieldsValue(),
       startDate: getFieldsValue()['startDate'],
@@ -163,29 +176,9 @@
 
   function confirmForm(e) {
     e.preventDefault();
-    if (cronForm.value.name === '' || cronForm.value.description === '') {
-      window['$message'].error('请填写完整');
-      return;
-    }
-    debugger;
-    if (!isCron(cronForm.value.schedule)) {
-      window['$message'].error('定时表达式不正确');
-      return;
-    }
-    formBtnLoading.value = true;
-    createCron(cronForm.value)
-      .then(() => {
-        window['$message'].success('创建成功');
-        formBtnLoading.value = false;
-        showModal.value = false;
-        router.push({
-          name: 'cron-manage',
-        });
-      })
-      .catch(() => {
-        window['$message'].error('创建失败');
-        formBtnLoading.value = false;
-      });
+  }
+  function handleSubmit() {
+    reloadTable();
   }
 </script>
 
