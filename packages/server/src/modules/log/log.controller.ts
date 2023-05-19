@@ -11,13 +11,16 @@ import { LogService } from './log.service'
 import { CrawlerService } from '../crawler/crawler.service'
 @Controller('log')
 export class LogController {
-  constructor(
-    private readonly logService: LogService,
-    private readonly crawlerService: CrawlerService,
-  ) {}
+  constructor(private readonly logService: LogService) {}
   @Post('list')
   async list(@Req() req: Request, @Body() body: any) {
     const userid = req['user']._id
+    const cronid = body?.query?.cronid
+    if (cronid) {
+      return {
+        data: await this.logService.findByCronid(cronid),
+      }
+    }
     const options = {
       ...body,
       query: body.query || {},

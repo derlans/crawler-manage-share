@@ -3,11 +3,6 @@ import { h } from 'vue';
 
 export const columns = [
   {
-    title: 'ID',
-    key: '_id',
-    width: 100,
-  },
-  {
     title: '爬虫名',
     key: 'name',
     width: 100,

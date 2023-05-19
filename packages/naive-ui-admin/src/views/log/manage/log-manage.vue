@@ -14,17 +14,6 @@
       @update:checked-row-keys="onCheckedRow"
       :scroll-x="1090"
     >
-      <template #tableTitle>
-        <n-button type="primary">
-          <template #icon>
-            <n-icon>
-              <PlusOutlined />
-            </n-icon>
-          </template>
-          新建
-        </n-button>
-      </template>
-
       <template #toolbar>
         <n-button type="primary" @click="reloadTable">刷新数据</n-button>
       </template>
@@ -45,13 +34,13 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { columns } from './columns';
-  import { PlusOutlined } from '@vicons/antd';
   import { getLogList, getJsonFile } from '@/api/log';
   import { saveJsonFile } from '@/utils/save';
   import { FormSchema, useForm } from '@/components/Form';
+  import { useRoute } from 'vue-router';
 
-  // const router = useRouter();
-  // const message = useMessage();
+  const route = useRoute();
+  const cronid = route.query.cronid;
   const actionRef = ref();
 
   const showModal = ref(false);
@@ -111,6 +100,16 @@
         placeholder: '任务名',
       },
       rules: [{ required: false, message: '请输入任务名', trigger: ['blur'] }],
+    },
+    {
+      field: 'cronid',
+      component: 'NInput',
+      label: '定时任务',
+      defaultValue: cronid,
+      componentProps: {
+        placeholder: '定时任务id',
+      },
+      rules: [{ required: false, message: '请输入定时任务id', trigger: ['blur'] }],
     },
     // 状态
     {

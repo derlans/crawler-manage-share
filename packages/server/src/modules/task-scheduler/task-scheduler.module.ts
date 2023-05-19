@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Module, forwardRef } from '@nestjs/common'
 import { TaskSchedulerController } from './task-scheduler.controller'
 import { TaskSchedulerService } from './task-scheduler.service'
 import { MongooseModule } from '@nestjs/mongoose'
@@ -8,10 +8,11 @@ import { ScheduleModule } from '@nestjs/schedule'
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'CronTask', schema: CronTaskSchema }]),
-    LogModule,
     ScheduleModule.forRoot(),
+    forwardRef(() => LogModule),
   ],
   controllers: [TaskSchedulerController],
   providers: [TaskSchedulerService],
+  exports: [TaskSchedulerService],
 })
 export class TaskSchedulerModule {}

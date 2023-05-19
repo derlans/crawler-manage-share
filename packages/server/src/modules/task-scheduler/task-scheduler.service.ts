@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable, forwardRef } from '@nestjs/common'
 import { SchedulerRegistry } from '@nestjs/schedule'
 import { CronJob } from 'cron'
 import { Model } from 'mongoose'
@@ -12,6 +12,7 @@ export class TaskSchedulerService {
     private readonly schedulerRegistry: SchedulerRegistry,
     @InjectModel(CronTask.name)
     private readonly cronTaskModel: Model<CronTask>,
+    @Inject(forwardRef(() => LogService))
     private readonly logService: LogService,
   ) {}
   createDynamicCronJob(name: string, schedule: string, callback: () => void) {
@@ -97,5 +98,8 @@ export class TaskSchedulerService {
       'status',
     ])
     return res
+  }
+  async findByid(id: string) {
+    return await this.cronTaskModel.findById(id).exec()
   }
 }

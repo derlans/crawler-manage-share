@@ -48,8 +48,11 @@
   import { getCronList, stopCron, startCron } from '@/api/cron';
   // import { saveJsonFile } from '@/utils/save';
   import { FormSchema, useForm } from '@/components/Form';
+  import { useRouter } from 'vue-router';
+  import { getJsonFile } from '@/api/log';
+  import { saveJsonFile } from '@/utils/save';
 
-  // const router = useRouter();
+  const router = useRouter();
   // const message = useMessage();
   const actionRef = ref();
 
@@ -92,17 +95,44 @@
             },
           },
           {
-            label: '导出成功数据',
+            label: '查看相关日志',
+            type: 'info',
+            style: 'margin-right: 10px;',
             onClick: async () => {
-              // const res = await getJsonFile(record._id);
-              // const data = res.data
-              //   .filter((item) => {
-              //     return item.isSuccess;
-              //   })
-              //   .map((item) => {
-              //     return item.data;
-              //   });
-              // saveJsonFile(data, record.name + '-success');
+              router.push({
+                name: 'log-manage',
+                query: {
+                  cronid: record._id,
+                },
+              });
+            },
+          },
+          {
+            label: '分批下载日志',
+            type: 'success',
+            style: 'margin-right: 10px;',
+            onClick: async () => {
+              const logList = record.logList;
+              for (let i = 0; i < logList.length; i++) {
+                const log = logList[i];
+                const res = await getJsonFile(log);
+                const data = res.data;
+                await saveJsonFile(data, record.name + log + '-log');
+              }
+            },
+          },
+          {
+            label: '下载日志',
+            type: 'warning',
+            onClick: async () => {
+              const logList = record.logList;
+              const data = await Promise.all(
+                logList.map(async (log) => {
+                  const res = await getJsonFile(log);
+                  return res.data;
+                })
+              );
+              await saveJsonFile(data, record.name + '-log');
             },
           },
         ],

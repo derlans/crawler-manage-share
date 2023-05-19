@@ -1,11 +1,19 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable, forwardRef } from '@nestjs/common'
 import { CrawlerRunLog } from '@/schemas/crawler.schema'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CrawlerService } from '../crawler/crawler.service'
 import { FileService } from '../file/file.service'
-import { lastDay, lastMonth, lastWeek, now } from '@/utils/time'
+import {
+  lastDay,
+  lastMonth,
+  lastWeek,
+  now,
+  today,
+  tomorrow,
+} from '@/utils/time'
 import { FindOptions, commonFind } from '@/utils/model'
+import { TaskSchedulerService } from '../task-scheduler/task-scheduler.service'
 @Injectable()
 export class LogService {
   constructor(
@@ -13,6 +21,8 @@ export class LogService {
     private readonly crawlerRunLog: Model<CrawlerRunLog>,
     private readonly crawlerService: CrawlerService,
     private readonly fileService: FileService,
+    @Inject(forwardRef(() => TaskSchedulerService))
+    private readonly taskSchedulerService: TaskSchedulerService,
   ) {}
   async logList(userid: string) {
     return await this.crawlerRunLog.find({ owner: userid })
@@ -90,10 +100,22 @@ export class LogService {
       }),
       countByName: await this.countByName(userid),
       countByStatus: await this.countByStatus(userid),
-      countByDayLastMonth: await this.countByDay(userid, lastMonth(), now()),
-      resultCountLastDay: await this.resultCount(userid, lastDay(), now()),
-      resultCountLastWeek: await this.resultCount(userid, lastWeek(), now()),
-      resultCountLastMonth: await this.resultCount(userid, lastMonth(), now()),
+      countByDayLastMonth: await this.countByDay(
+        userid,
+        lastMonth(),
+        tomorrow(),
+      ),
+      resultCountLastDay: await this.resultCount(userid, lastDay(), tomorrow()),
+      resultCountLastWeek: await this.resultCount(
+        userid,
+        lastWeek(),
+        tomorrow(),
+      ),
+      resultCountLastMonth: await this.resultCount(
+        userid,
+        lastMonth(),
+        tomorrow(),
+      ),
     }
   }
   async resultCount(userid: string, startTime: Date, endTime: Date) {
@@ -159,7 +181,11 @@ export class LogService {
       {
         $group: {
           _id: {
-            $dateToString: { format: '%Y-%m-%d', date: '$createdAt' },
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$createdAt',
+              timezone: 'Asia/Shanghai',
+            },
           },
           count: { $sum: 1 },
           resultCount: { $sum: '$resultCount' },
@@ -212,5 +238,21 @@ export class LogService {
       resultSize: JSON.stringify(result).length,
     })
     await this.fileService.saveJson(logid, result)
+  }
+  async findByCronid(cronid: string) {
+    const cron = await this.taskSchedulerService.findByid(cronid)
+    if (!cron) {
+      return []
+    }
+    const result = await Promise.all(
+      cron.logList.map((item) => {
+        return this.crawlerRunLog.findById(item).exec()
+      }),
+    )
+    return {
+      list: result.reverse(),
+      total: result.length,
+      pageCount: 1,
+    }
   }
 }
