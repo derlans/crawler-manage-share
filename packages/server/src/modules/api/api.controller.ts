@@ -35,4 +35,13 @@ export class ApiController {
       data: await this.apiService.findOne({ _id, owner: userid }),
     }
   }
+  @Post('update')
+  async update(@Req() req: Request, @Body() body: any) {
+    const userid = req['user']._id
+    const _id = body._id
+    await this.apiService.findOneAndUpdate({ _id, owner: userid }, body)
+    return {
+      data: null,
+    }
+  }
 }

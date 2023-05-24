@@ -20,4 +20,7 @@ export class ApiService {
   async findOne(query: any) {
     return await this.apiModel.findOne(query)
   }
+  async findOneAndUpdate(query: any, update: any) {
+    return await this.apiModel.findOneAndUpdate(query, update)
+  }
 }

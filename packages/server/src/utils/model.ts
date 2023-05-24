@@ -8,8 +8,8 @@ export interface FindOptions {
   endDate?: Date
   fuzzyFields?: string[]
 }
-export async function commonFind<T extends Model<any>>(
-  model: T,
+export async function commonFind<T extends any>(
+  model: Model<T>,
   options: FindOptions = {},
   searchableFields?: string[],
 ) {
@@ -50,12 +50,12 @@ export async function commonFind<T extends Model<any>>(
   } else if (endDate) {
     filterQuery.createdAt = { $lte: endDate }
   }
-  const list = await model
+  const list = (await model
     .find(filterQuery)
     .sort({ createdAt: -1 })
     .skip((page - 1) * pageSize)
     .limit(pageSize)
-    .exec()
+    .exec()) as T[]
 
   const total = await model.countDocuments(filterQuery)
   const pageCount = Math.ceil(total / pageSize)
