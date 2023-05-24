@@ -17,5 +17,14 @@ export class Api extends Document {
   // swagger json
   @Prop({ required: true })
   swagger: string
+  // 是否公开
+  @Prop({ default: false })
+  public: boolean
+  // 收藏数
+  @Prop({ default: 0 })
+  favoriteCount: number
+  // 点赞数
+  @Prop({ default: 0 })
+  likeCount: number
 }
 export const ApiSchema = SchemaFactory.createForClass(Api)
