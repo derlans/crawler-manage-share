@@ -39,7 +39,7 @@ export const columns = [
     },
   },
   {
-    title: '执行日志总数',
+    title: '执行任务总数',
     key: 'logList',
     width: 50,
     render(row: any) {

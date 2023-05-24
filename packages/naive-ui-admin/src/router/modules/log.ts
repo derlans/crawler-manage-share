@@ -21,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/log/manage',
     component: Layout,
     meta: {
-      title: '日志',
+      title: '任务',
       icon: renderIcon(FileTextOutlined),
       sort: 4,
     },
@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'manage',
         name: 'log-manage',
         meta: {
-          title: '日志管理',
+          title: '任务管理',
         },
         component: () => import('@/views/log/manage/log-manage.vue'),
       },
