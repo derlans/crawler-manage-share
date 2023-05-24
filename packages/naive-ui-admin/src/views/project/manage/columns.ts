@@ -1,3 +1,7 @@
+import { updateProject } from '@/api/project';
+import { NSwitch } from 'naive-ui';
+import { h } from 'vue';
+
 export const columns = [
   {
     title: '名称',
@@ -18,11 +22,20 @@ export const columns = [
     },
   },
   {
-    title: '更新日期',
-    key: 'updatedAt',
-    width: 160,
+    title: '是否公开',
+    key: 'public',
+    width: 100,
     render(row) {
-      return new Date(row.updatedAt).toLocaleString();
+      return h(NSwitch, {
+        checked: row.public,
+        onUpdateValue: async (value) => {
+          await updateProject({
+            id: row._id,
+            public: value,
+          });
+          window['$message'].success('更新成功');
+        },
+      });
     },
   },
 ];

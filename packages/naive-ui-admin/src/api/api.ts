@@ -22,3 +22,11 @@ export function getApiDetail(params) {
     params,
   });
 }
+
+export function updateApi(params) {
+  return http.request({
+    url: '/api/update',
+    method: 'POST',
+    params,
+  });
+}
