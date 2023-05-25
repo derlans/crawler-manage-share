@@ -10,6 +10,8 @@ export const whitelist = [
   '/api/user/register',
   '/api/crawler/test',
   '/api/log/notify',
+  '/api/status',
+  '/api/status/data',
 ]
 
 export const pythonServePath = {

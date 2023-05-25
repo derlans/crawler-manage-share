@@ -6,6 +6,7 @@ import { LogService } from '../log/log.service'
 import { CronTask } from '@/schemas/cronTask.shcema'
 import { FindOptions, commonFind } from '@/utils/model'
 import { InjectModel } from '@nestjs/mongoose'
+import { getMemoryUsage } from '@/utils/system'
 @Injectable()
 export class TaskSchedulerService {
   constructor(
@@ -88,6 +89,7 @@ export class TaskSchedulerService {
   }
   async onApplicationBootstrap() {
     console.log('init cron job')
+    getMemoryUsage()
     await this.initCronJob()
   }
   // 查找，支持分页,支持name模糊查询,支持时间范围查询
