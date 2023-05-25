@@ -39,9 +39,6 @@ export class ApiController {
   async update(@Req() req: Request, @Body() body: any) {
     const userid = req['user']._id
     const _id = body._id
-    await this.apiService.findOneAndUpdate({ _id, owner: userid }, body)
-    return {
-      data: null,
-    }
+    await this.apiService.updateOne({ _id, owner: userid }, body)
   }
 }

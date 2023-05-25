@@ -37,3 +37,11 @@ export function updateProject(params) {
     params,
   });
 }
+
+export function deleteProject(params) {
+  return http.request({
+    url: '/project/delete',
+    method: 'POST',
+    params,
+  });
+}

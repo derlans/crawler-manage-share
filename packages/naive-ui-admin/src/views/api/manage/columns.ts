@@ -27,13 +27,14 @@ export const columns = [
     width: 100,
     render(row) {
       return h(NSwitch, {
-        checked: row.public,
+        value: row.public,
         onUpdateValue: async (value) => {
           await updateApi({
-            id: row._id,
+            _id: row._id,
             public: value,
           });
           window['$message'].success('更新成功');
+          row.public = value;
         },
       });
     },

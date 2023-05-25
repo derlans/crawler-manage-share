@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { ApiOutlined } from '@vicons/antd';
+import { CommentOutlined } from '@vicons/antd';
 import { renderIcon } from '@/utils/index';
 
 /**
@@ -16,33 +16,31 @@ import { renderIcon } from '@/utils/index';
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/api',
-    name: 'Api',
-    redirect: '/api/detail',
+    path: '/community',
+    name: 'Community',
+    redirect: '/community/project',
     component: Layout,
     meta: {
-      title: '接口',
-      icon: renderIcon(ApiOutlined),
-      sort: 6,
+      title: '社区',
+      icon: renderIcon(CommentOutlined),
+      sort: 7,
     },
     children: [
       {
-        path: 'manage',
-        name: 'api-manage',
+        path: 'project',
+        name: 'community-project',
         meta: {
-          title: '接口管理',
+          title: '社区-项目',
         },
-        component: () => import('@/views/api/manage/api-manage.vue'),
+        component: () => import('@/views/community/project/community-project.vue'),
       },
       {
-        path: 'detail/:id',
-        name: 'api-detail',
+        path: 'api',
+        name: 'community-api',
         meta: {
-          title: '接口详情',
-          hidden: true,
-          activeMenu: 'basic-api',
+          title: '社区-api文档',
         },
-        component: () => import('@/views/api/detail/api-detail.vue'),
+        component: () => import('@/views/community/api/community-api.vue'),
       },
     ],
   },

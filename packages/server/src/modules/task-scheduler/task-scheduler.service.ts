@@ -59,7 +59,7 @@ export class TaskSchedulerService {
       cronJob.schedule,
       async () => {
         const log = await this.logService.create(
-          cronJob.owner.toString(),
+          cronJob.owner,
           cronJob.crawlerRun.toString(),
         )
         await this.cronTaskModel.findByIdAndUpdate(cronJob._id, {
@@ -76,7 +76,7 @@ export class TaskSchedulerService {
         cronTask.schedule,
         async () => {
           const log = await this.logService.create(
-            cronTask.owner.toString(),
+            cronTask.owner,
             cronTask.crawlerRun.toString(),
           )
           await this.cronTaskModel.findByIdAndUpdate(cronTask._id, {

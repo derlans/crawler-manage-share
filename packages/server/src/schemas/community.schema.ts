@@ -14,9 +14,9 @@ export const FavoriteProjectSchema =
 // 用户点赞项目
 @Schema({ timestamps: true })
 export class LikeProject extends Document {
-  @Prop({ required: true, index: true })
+  @Prop({ required: true, index: true, type: Types.ObjectId })
   user: Types.ObjectId
-  @Prop({ required: true, index: true })
+  @Prop({ required: true, index: true, type: Types.ObjectId })
   project: Types.ObjectId
 }
 export const LikeProjectSchema = SchemaFactory.createForClass(LikeProject)

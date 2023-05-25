@@ -20,7 +20,9 @@ export class ProjectController {
   @Post('create')
   async createProject(@Body() project: CreateProjectDto, @Request() req) {
     const user = req.user as UserDoc
-    return await this.projectService.createProject(project, user._id)
+    return {
+      data: await this.projectService.createProject(project, user._id),
+    }
   }
   @Post('detail')
   async projectDetail(@Body() body, @Request() req) {
@@ -32,8 +34,13 @@ export class ProjectController {
   @Post('update')
   async updateProject(@Body() body, @Request() req) {
     const { _id, ...rest } = body
-    return {
-      data: await this.projectService.updateProject(_id, rest),
-    }
+    const userid = req['user']._id
+    await this.projectService.updateOne({ _id, owner: userid }, rest)
+  }
+  @Post('delete')
+  async deleteProject(@Body() body, @Request() req) {
+    const { _id } = body
+    const userid = req['user']._id
+    await this.projectService.deleteOne({ _id, owner: userid })
   }
 }

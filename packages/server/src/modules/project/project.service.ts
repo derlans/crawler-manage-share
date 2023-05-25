@@ -24,11 +24,17 @@ export class ProjectService {
   async createProject(project: CreateProjectDto, userid: string) {
     return await this.projectModel.create({ ...project, owner: userid })
   }
-  async projectDetail(_id: string) {
-    return await this.projectModel.findById(_id)
+  async projectDetail(projectid: string) {
+    return await this.projectModel.findById(projectid)
   }
-  async updateProject(_id: string, rest: any) {
-    return await this.projectModel.findByIdAndUpdate(_id, rest)
+  async updateProject(projectid: string, rest: any) {
+    await this.projectModel.updateOne({ _id: projectid }, rest)
+  }
+  async updateOne(query: any, update: any) {
+    await this.projectModel.updateOne(query, update)
+  }
+  async deleteOne(query: any) {
+    await this.projectModel.deleteOne(query)
   }
   async count(userid: string) {
     const totalCount = await this.projectModel.countDocuments({

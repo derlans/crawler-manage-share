@@ -32,22 +32,6 @@
     </BasicTable>
 
     <n-modal v-model:show="showModal" :show-icon="false" preset="dialog" title="新建">
-      <n-form
-        :model="formParams"
-        :rules="rules"
-        ref="formRef"
-        label-placement="left"
-        :label-width="80"
-        class="py-4"
-      >
-        <n-form-item label="名称" path="name">
-          <n-input placeholder="请输入名称" v-model:value="formParams.name" />
-        </n-form-item>
-        <n-form-item label="描述" path="formParams">
-          <n-input placeholder="请输入描述" v-model:value="formParams.description" />
-        </n-form-item>
-      </n-form>
-
       <template #action>
         <n-space>
           <n-button @click="() => (showModal = false)">取消</n-button>
@@ -65,17 +49,8 @@
   import { columns } from './columns';
   import { PlusOutlined } from '@vicons/antd';
   import { useRouter } from 'vue-router';
-  import { type FormRules } from 'naive-ui';
-  import { getProjectList, createProject, deleteProject } from '@/api/project';
-
-  const rules: FormRules = {
-    name: {
-      required: true,
-      trigger: ['blur', 'input'],
-      message: '请输入名称',
-    },
-  };
-
+  import { getCommunityProjectList } from '@/api/community';
+  import { createProject, updateProject } from '@/api/project';
   const schemas: FormSchema[] = [
     {
       field: 'name',
@@ -139,18 +114,16 @@
         style: 'button',
         actions: [
           {
-            label: '详情',
-            style: 'margin-right: 10px;',
+            label: '添加为我的项目',
             type: 'primary',
-            onClick: () => router.push({ name: 'project-detail', params: { id: record._id } }),
-          },
-          {
-            label: '删除',
-            type: 'error',
             style: 'margin-right: 10px;',
             onClick: async () => {
-              await deleteProject({ _id: record._id });
-              actionRef.value.reload();
+              const project = await createProject({
+                name: record.name,
+                description: record.description,
+                crawlerList: record.crawlerList,
+              });
+              router.push({ name: 'project-detail', params: { id: project._id } });
             },
           },
         ],
@@ -169,7 +142,7 @@
   }
 
   const loadDataTable = async (v) => {
-    return await getProjectList({
+    return await getCommunityProjectList({
       ...v,
       query: getFieldsValue(),
       startDate: getFieldsValue()['startDate'],
@@ -186,33 +159,7 @@
     actionRef.value.reload();
   }
 
-  function confirmForm(e) {
-    e.preventDefault();
-    formBtnLoading.value = true;
-    formRef.value.validate((errors) => {
-      if (!errors) {
-        createProject(formParams);
-        window['$message'].success('新建成功');
-        setTimeout(() => {
-          showModal.value = false;
-          reloadTable();
-        });
-      } else {
-        window['$message'].error('请填写完整信息');
-      }
-      formBtnLoading.value = false;
-    });
-  }
-
-  function handleEdit(record: Recordable) {
-    console.log('点击了编辑', record);
-    router.push({ name: 'basic-info', params: { id: record.id } });
-  }
-
-  function handleDelete(record: Recordable) {
-    console.log('点击了删除', record);
-    window['$message'].info('点击了删除');
-  }
+  function confirmForm(e) {}
 
   function handleSubmit() {
     reloadTable();

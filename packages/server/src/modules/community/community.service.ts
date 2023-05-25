@@ -34,14 +34,18 @@ export class CommunityService {
     )
     const listWithLikeAndFavorite = await Promise.all(
       list.map(async (item) => {
-        const isLike = await this.likeApiModel.exists({
-          api: item._id,
+        const isLike = (await this.likeApiModel.exists({
+          api: item._id.toString(),
           user: userid,
-        })
-        const isFavorite = await this.favoriteApiModel.exists({
-          api: item._id,
+        }))
+          ? true
+          : false
+        const isFavorite = (await this.favoriteApiModel.exists({
+          api: item._id.toString(),
           user: userid,
-        })
+        }))
+          ? true
+          : false
         return {
           ...item.toJSON(),
           isLike,
@@ -62,17 +66,21 @@ export class CommunityService {
     )
     const listWithLikeAndFavorite = await Promise.all(
       list.map(async (item) => {
-        const isLike = await this.likeProjectModel.exists({
-          project: item._id,
+        const isLike = (await this.likeProjectModel.exists({
+          project: item._id.toString(),
           user: userid,
-        })
-        const isFavorite = await this.favoriteProjectModel.exists({
-          project: item._id,
+        }))
+          ? true
+          : false
+        const isFavorite = (await this.favoriteProjectModel.exists({
+          project: item._id.toString(),
           user: userid,
-        })
+        }))
+          ? true
+          : false
         return {
           ...item.toJSON(),
-          isLike,
+          isLike: isLike,
           isFavorite,
         }
       }),
@@ -177,6 +185,7 @@ export class CommunityService {
       project: projectid,
       user: userid,
     })
+    console.log(isLike, projectid, userid)
     if (isLike) return
     await this.likeProjectModel.create({
       project: projectid,

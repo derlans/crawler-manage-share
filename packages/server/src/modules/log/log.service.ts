@@ -1,7 +1,7 @@
 import { Inject, Injectable, forwardRef } from '@nestjs/common'
 import { CrawlerRunLog } from '@/schemas/crawler.schema'
 import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
+import { Model, Types } from 'mongoose'
 import { CrawlerService } from '../crawler/crawler.service'
 import { FileService } from '../file/file.service'
 import {
@@ -36,7 +36,7 @@ export class LogService {
     ])
     return res
   }
-  async create(userid: string, crawlerRunid: string) {
+  async create(userid: Types.ObjectId, crawlerRunid: string) {
     const crawlerRun = await this.crawlerService.findOneById(crawlerRunid)
     await this.crawlerService.updateOneById(crawlerRunid, {
       runCount: crawlerRun.runCount + 1,
@@ -70,6 +70,8 @@ export class LogService {
     return await this.crawlerRunLog.findById(id)
   }
   async count(userid: string) {
+    const totalCount = await this.crawlerRunLog.countDocuments({})
+    console.log(totalCount, userid)
     return {
       totalCount: await this.crawlerRunLog.countDocuments({ owner: userid }),
       lastDayCount: await this.crawlerRunLog.countDocuments({
