@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { ApiOutlined } from '@vicons/antd';
+import { CloudServerOutlined } from '@vicons/antd';
 import { renderIcon } from '@/utils/index';
 
 /**
@@ -22,8 +22,8 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '节点',
-      icon: renderIcon(ApiOutlined),
-      sort: 6,
+      icon: renderIcon(CloudServerOutlined),
+      sort: 8,
     },
     children: [
       {

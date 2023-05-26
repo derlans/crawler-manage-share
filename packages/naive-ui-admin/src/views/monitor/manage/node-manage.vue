@@ -59,6 +59,10 @@
           {
             label: '查看监控',
             onClick: () => {
+              if (!record.monitorUrl) {
+                window['$message'].error('该节点未配置监控地址');
+                return;
+              }
               activeCrawlerNode.value = record;
               showModal.value = true;
             },
