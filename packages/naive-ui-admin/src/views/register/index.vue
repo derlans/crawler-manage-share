@@ -135,9 +135,13 @@
       padding: 32px 0;
       text-align: center;
 
+      img {
+        margin: 0 auto;
+      }
       &-desc {
-        font-size: 14px;
+        font-size: 20px;
         color: #808695;
+        margin-top: 10px;
       }
     }
 

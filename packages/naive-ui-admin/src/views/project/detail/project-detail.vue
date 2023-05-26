@@ -3,8 +3,12 @@
     <n-descriptions :bordered="true" :column="4" class="m-4">
       <n-descriptions-item label="项目名称">{{ projectDetail.name }}</n-descriptions-item>
       <n-descriptions-item label="项目描述">{{ projectDetail.description }}</n-descriptions-item>
-      <n-descriptions-item label="创建时间">{{ projectDetail.createdAt }}</n-descriptions-item>
-      <n-descriptions-item label="更新时间">{{ projectDetail.updatedAt }}</n-descriptions-item>
+      <n-descriptions-item label="创建时间">{{
+        new Date(projectDetail.createdAt).toLocaleString()
+      }}</n-descriptions-item>
+      <n-descriptions-item label="更新时间">{{
+        new Date(projectDetail.updatedAt).toLocaleString()
+      }}</n-descriptions-item>
     </n-descriptions>
     <BasicTable
       :columns="columns"
@@ -85,6 +89,7 @@
   } from '@crawler-manage-share/utils';
   import crawlerEdit from '@/views/crawler/crawler-edit.vue';
   import crawlerRun from '@/views/crawler/crawler-run.vue';
+  import { useDialog } from 'naive-ui';
   const router = useRouter();
   const { id } = router.currentRoute.value.params;
   const projectId = (Array.isArray(id) ? id[0] : id) as string;
@@ -96,7 +101,7 @@
     updatedAt: string;
   }>({} as any);
   const actionRef = ref();
-
+  const dialog = useDialog();
   const crawlerForm = ref(defaultCrawlerSchema);
   const crawlerRunForm = ref(defaultCrawlerSchema);
   const showModal = ref(false);
@@ -115,11 +120,20 @@
           {
             label: '删除',
             onClick: async () => {
-              const filterList = projectDetail.value.crawlerList.filter(
-                (item) => item.name !== record.name
-              );
-              await updateCrawlerList(filterList);
-              actionRef.value.reload();
+              // 确认删除
+              dialog.warning({
+                title: '删除',
+                content: '确认删除吗？',
+                positiveText: '确定',
+                negativeText: '取消',
+                onPositiveClick: async () => {
+                  const filterList = projectDetail.value.crawlerList.filter(
+                    (item) => item.name !== record.name
+                  );
+                  await updateCrawlerList(filterList);
+                  actionRef.value.reload();
+                },
+              });
             },
           },
           {

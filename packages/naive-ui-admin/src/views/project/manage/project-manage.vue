@@ -65,7 +65,7 @@
   import { columns } from './columns';
   import { PlusOutlined } from '@vicons/antd';
   import { useRouter } from 'vue-router';
-  import { type FormRules } from 'naive-ui';
+  import { useDialog, type FormRules } from 'naive-ui';
   import { getProjectList, createProject, deleteProject } from '@/api/project';
 
   const rules: FormRules = {
@@ -121,7 +121,7 @@
   const formRef: any = ref(null);
   // const message = useMessage();
   const actionRef = ref();
-
+  const dialog = useDialog();
   const showModal = ref(false);
   const formBtnLoading = ref(false);
   const formParams = reactive({
@@ -149,8 +149,17 @@
             type: 'error',
             style: 'margin-right: 10px;',
             onClick: async () => {
-              await deleteProject({ _id: record._id });
-              actionRef.value.reload();
+              // 确认删除
+              dialog.warning({
+                title: '删除',
+                content: '确认删除吗？',
+                positiveText: '确定',
+                negativeText: '取消',
+                onPositiveClick: async () => {
+                  await deleteProject({ _id: record._id });
+                  actionRef.value.reload();
+                },
+              });
             },
           },
         ],

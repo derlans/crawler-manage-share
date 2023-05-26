@@ -8073,7 +8073,9 @@ const uh = (t) => /^(async\s+)?function\s*\w*\s*\([\w\s,]*\)\s*\{[\s\S]*\}$/.tes
     return !1;
   try {
     const e = nh.parseExpression(t);
-    return console.log("interval", e), e.next().toDate(), !0;
+    console.log("interval", e);
+    const r = e.next().toDate();
+    return console.log("nextDate", r), !0;
   } catch (e) {
     return console.log("err", e), !1;
   }
