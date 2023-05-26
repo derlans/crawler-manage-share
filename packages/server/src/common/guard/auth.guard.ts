@@ -5,7 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common'
 import { Observable } from 'rxjs'
-import { jwtConstants, whitelist } from '@/constants'
+import { jwtConstants, whitelist } from '@/config/constants'
 import { UserService } from '@/modules/user/user.service'
 import { jwtVerify } from '@/utils/jwt'
 @Injectable()

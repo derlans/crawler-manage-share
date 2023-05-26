@@ -6,7 +6,7 @@ import { Crawler } from '@crawler-manage-share/utils'
 import axios from 'axios'
 import { lastDay, lastMonth, lastWeek } from '@/utils/time'
 import { FindOptions, commonFind } from '@/utils/model'
-import { pythonServePath } from '@/constants'
+import { pythonServePath } from '@/config/constants'
 @Injectable()
 export class CrawlerService {
   constructor(

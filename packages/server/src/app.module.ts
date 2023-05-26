@@ -11,6 +11,7 @@ import { ApiModule } from './modules/api/api.module'
 import { TaskSchedulerModule } from './modules/task-scheduler/task-scheduler.module'
 import { CommunityModule } from './modules/community/community.module'
 import { StatusMonitorModule } from 'nestjs-status-monitor'
+import { CrawlerNodeModule } from './modules/crawler-node/crawler-node.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { StatusMonitorModule } from 'nestjs-status-monitor'
     ApiModule,
     CommunityModule,
     StatusMonitorModule.forRoot(),
+    CrawlerNodeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

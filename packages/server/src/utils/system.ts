@@ -1,35 +1,53 @@
 const os = require('os')
 const pidusage = require('pidusage')
-
-// 获取特定进程的CPU使用率
-// pidusage(process.pid, function (err, stats) {
-//   if (err) {
-//     console.error(err)
-//     return
-//   }
-
-//   console.log(process.pid + 'CPU使用率:', stats.cpu)
-// })
-
+const { exec } = require('child_process')
 export const getMemoryUsage = () => {
   const totalMemory = os.totalmem()
   const freeMemory = os.freemem()
-
-  // 计算内存使用率
   const memoryUsage = (1 - freeMemory / totalMemory) * 100
-  pidusage(process.pid, function (err, stats) {
-    if (err) {
-      console.error(err)
-      return
-    }
-
-    console.log(process.pid + 'CPU使用率:', stats.cpu)
-  })
   return memoryUsage
 }
-// 获取系统的CPU信息
-const cpuInfo = os.cpus()
 
-console.log('CPU信息:', cpuInfo)
+export const getProcessCpuUsage = (): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    pidusage(process.pid, function (err, stats) {
+      if (err) {
+        console.error(err)
+        reject(err)
+        return
+      }
+      resolve(stats.cpu)
+    })
+  })
+}
 
-export const getCPUUsage = () => {}
+// 兼容windows和linux系统
+export const getCPUUsage = () => {
+  return new Promise((resolve, reject) => {
+    exec(
+      'typeperf -sc 1 "\\Processor(_Total)\\% Processor Time"',
+      (error, stdout, stderr) => {
+        if (error) {
+          reject(error)
+          return
+        }
+        // 解析输出，提取CPU使用率
+        const outputLines = stdout.split('\n')
+        const cpuUsageLine = outputLines[2]
+        const cpuUsage = cpuUsageLine.split(',')[1].trim().replaceAll('"', '')
+        resolve(Number(cpuUsage))
+      },
+    )
+  })
+}
+
+export const getSystemInfo = async () => {
+  const memoryUsage = getMemoryUsage()
+  const cpuUsage = await getCPUUsage()
+  const processCpuUsage = await getProcessCpuUsage()
+  return {
+    memoryUsage,
+    cpuUsage,
+    processCpuUsage,
+  }
+}

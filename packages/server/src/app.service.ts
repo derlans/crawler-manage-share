@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { ProjectService } from './modules/project/project.service'
 import { CrawlerService } from './modules/crawler/crawler.service'
 import { LogService } from './modules/log/log.service'
+import { getSystemInfo } from './utils/system'
 
 @Injectable()
 export class AppService {
@@ -20,5 +21,8 @@ export class AppService {
       crawler: crawler,
       log: log,
     }
+  }
+  async systemInfo() {
+    return getSystemInfo()
   }
 }

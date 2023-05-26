@@ -11,4 +11,10 @@ export class AppController {
       data: await this.appService.console(userid),
     }
   }
+  @Post('system')
+  async system() {
+    return {
+      data: await this.appService.systemInfo(),
+    }
+  }
 }

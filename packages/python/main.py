@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from crawler import Crawler
 import requests
 import json
+from system import get_system_info
 app = Flask(__name__)
 from concurrent.futures import ThreadPoolExecutor
 @app.route('/execute/result', methods=['POST'])
@@ -12,7 +13,7 @@ def execute_code_result():
     allUserParams=data['allUserParams'] or []
     crawler = Crawler(code)
     crawler.run(allUserParams)
-    return jsonify({'code': 0, 'msg': 'Execution successful', 'result': crawler.result})
+    return jsonify({'code': 0, 'msg': 'Execution successful', 'data': crawler.result})
 
 @app.route('/execute', methods=['POST'])
 def execute_code():
@@ -21,6 +22,10 @@ def execute_code():
     run(data)
     print('返回')
     return jsonify({'code': 0, 'msg': 'Execution successful'})
+
+@app.route('/system', methods=['POST'])
+def system_info():
+    return jsonify({'code': 0, 'msg': 'Execution successful', 'data': get_system_info()})
 
 def run(data):
     code = data['code']

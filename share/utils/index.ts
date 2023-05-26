@@ -5,3 +5,5 @@ export * from './src/crawler'
 export * from './src/is'
 
 export * from './src/check'
+
+export * from './src/crawlerNode'

@@ -12,6 +12,7 @@ export const whitelist = [
   '/api/log/notify',
   '/api/status',
   '/api/status/data',
+  '/api/system',
 ]
 
 export const pythonServePath = {

@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken'
-import { jwtConstants } from '@/constants'
+import { jwtConstants } from '@/config/constants'
 export const jwtSign = (id: string) => {
   const token = jwt.sign(
     {
