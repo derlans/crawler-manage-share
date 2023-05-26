@@ -25,7 +25,7 @@
               <PlusOutlined />
             </n-icon>
           </template>
-          新建javascript爬虫
+          新建javascript爬虫模板
         </n-button>
         <n-button type="success" @click="() => addTable('python')">
           <template #icon>
@@ -33,7 +33,7 @@
               <PlusOutlined />
             </n-icon>
           </template>
-          新建python爬虫
+          新建python爬虫模板
         </n-button>
       </template>
 
@@ -144,7 +144,7 @@
             },
           },
           {
-            label: '创建任务',
+            label: '创建爬虫',
             onClick: () => {
               showCrawlerModal.value = true;
               crawlerRunForm.value = record;
