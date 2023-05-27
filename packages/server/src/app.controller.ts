@@ -19,7 +19,10 @@ export class AppController {
   }
   @Post('jieba')
   async jieba(@Body() body) {
-    const { text } = body
+    let { text } = body
+    if (Array.isArray(text)) {
+      text = text.join(' ')
+    }
     return {
       data: await this.appService.jieba(text),
     }

@@ -48,7 +48,7 @@
     fileurl: string;
   }>();
   const iframeUrl = computed(() => {
-    return `https://jsoncrack.com/editor?url=${props.fileurl}`;
+    return `http://json.derlan.top/editor?url=${props.fileurl}`;
   });
   const analyseResult = computed(() => {
     return jsonUtils.analyseJson(props.value);
@@ -84,7 +84,7 @@
   watch(
     () => props.value,
     async () => {
-      const wordCountResult = await getJieba({ text: analyseResult.value.stringValues.join(' ') });
+      const wordCountResult = await getJieba({ text: analyseResult.value.stringValues });
       wordCount.value = wordCountResult;
     },
     {

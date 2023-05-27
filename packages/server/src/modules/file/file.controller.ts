@@ -21,8 +21,8 @@ export class FileController {
       return item.data
     }) as any[]
     // 限制大小
-    if (data.length > 10) {
-      data.length = 10
+    if (data.length > 1) {
+      data.length = 1
     }
     res.send(JSON.stringify(data))
   }

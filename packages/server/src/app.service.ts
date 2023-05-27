@@ -26,6 +26,6 @@ export class AppService {
     return getSystemInfo()
   }
   async jieba(text = '') {
-    return jieba.extract(text, 100)
+    return jieba.extract(text, 1000)
   }
 }
