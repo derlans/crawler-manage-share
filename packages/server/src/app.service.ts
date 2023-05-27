@@ -3,7 +3,7 @@ import { ProjectService } from './modules/project/project.service'
 import { CrawlerService } from './modules/crawler/crawler.service'
 import { LogService } from './modules/log/log.service'
 import { getSystemInfo } from './utils/system'
-
+const jieba = require('nodejieba')
 @Injectable()
 export class AppService {
   constructor(
@@ -24,5 +24,8 @@ export class AppService {
   }
   async systemInfo() {
     return getSystemInfo()
+  }
+  async jieba(text = '') {
+    return jieba.extract(text, 100)
   }
 }

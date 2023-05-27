@@ -1,0 +1,6 @@
+const nodejieba = require('nodejieba')
+const data = require('../../../python/data/test1.json')
+const text = data.map((item) => item.join(' ')).join(' ')
+// const result = nodejieba.extract(JSON.stringify(data), 100)
+console.log(nodejieba.extract(JSON.stringify(data), 100))
+console.log(nodejieba.extract(text, 100))

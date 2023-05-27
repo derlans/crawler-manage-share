@@ -27,6 +27,20 @@
         </n-space>
       </template>
     </n-modal>
+    <n-modal
+      v-model:show="showAnalyseModal"
+      :show-icon="false"
+      preset="dialog"
+      title="数据窥探"
+      style="width: 95vw; margin: 20px auto"
+    >
+      <Analyse :value="analyseData.value" :name="analyseData.name" :fileurl="analyseData.fileurl" />
+      <template #action>
+        <n-space>
+          <n-button @click="() => (showAnalyseModal = false)">关闭</n-button>
+        </n-space>
+      </template>
+    </n-modal>
   </n-card>
 </template>
 
@@ -38,14 +52,19 @@
   import { saveJsonFile } from '@/utils/save';
   import { FormSchema, useForm } from '@/components/Form';
   import { useRoute } from 'vue-router';
-
+  import Analyse from '@/components/Analyse/index.vue';
   const route = useRoute();
   const cronid = route.query.cronid;
   const actionRef = ref();
 
   const showModal = ref(false);
   const formBtnLoading = ref(false);
-
+  const showAnalyseModal = ref(false);
+  const analyseData = ref({
+    name: '',
+    value: {},
+    fileurl: '',
+  });
   const actionColumn = reactive({
     width: 220,
     title: '操作',
@@ -55,6 +74,21 @@
       return h(TableAction as any, {
         style: 'button',
         actions: [
+          {
+            label: '数据窥探',
+            onClick: async () => {
+              const res = await getJsonFile(record._id);
+              const data = res.data.map((item) => {
+                return item.data;
+              });
+              analyseData.value = {
+                name: record.name,
+                value: data,
+                fileurl: `http://localhost:3000/api/file/data/${record._id}`,
+              };
+              showAnalyseModal.value = true;
+            },
+          },
           {
             label: '导出日志',
             onClick: async () => {
@@ -73,20 +107,20 @@
               saveJsonFile(data, record.name + '-data');
             },
           },
-          {
-            label: '导出成功数据',
-            onClick: async () => {
-              const res = await getJsonFile(record._id);
-              const data = res.data
-                .filter((item) => {
-                  return item.isSuccess;
-                })
-                .map((item) => {
-                  return item.data;
-                });
-              saveJsonFile(data, record.name + '-success');
-            },
-          },
+          // {
+          //   label: '导出成功数据',
+          //   onClick: async () => {
+          //     const res = await getJsonFile(record._id);
+          //     const data = res.data
+          //       .filter((item) => {
+          //         return item.isSuccess;
+          //       })
+          //       .map((item) => {
+          //         return item.data;
+          //       });
+          //     saveJsonFile(data, record.name + '-success');
+          //   },
+          // },
         ],
       });
     },

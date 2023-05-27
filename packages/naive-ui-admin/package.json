@@ -46,6 +46,7 @@
     "codemirror": "^6.0.1",
     "date-fns": "^2.29.3",
     "echarts": "^5.4.0",
+    "echarts-wordcloud": "^2.1.0",
     "element-resize-detector": "^1.2.4",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",

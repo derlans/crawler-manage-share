@@ -15,7 +15,12 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest()
     const token = request.headers['authorization']
     const url = request.url
-    if (whitelist.includes(url)) {
+    // 判断url是否匹配白名单
+    const isWhite = whitelist.some((item) => {
+      return url.startsWith(item)
+    })
+    // 如果匹配白名单，直接放行
+    if (isWhite) {
       return true
     }
     const id = jwtVerify(token)
