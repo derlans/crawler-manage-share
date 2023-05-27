@@ -59,5 +59,8 @@ export const columns = [
     title: '结果大小',
     key: 'resultSize',
     width: 100,
+    render(row: any) {
+      return `${(row.resultSize / 1024).toFixed(2)}kb`;
+    },
   },
 ];
