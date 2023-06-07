@@ -67,6 +67,7 @@
   import { useRouter } from 'vue-router';
   import { useDialog, type FormRules } from 'naive-ui';
   import { getProjectList, createProject, deleteProject } from '@/api/project';
+  import { confirmDelete } from '@/utils/operate';
 
   const rules: FormRules = {
     name: {
@@ -149,17 +150,9 @@
             type: 'error',
             style: 'margin-right: 10px;',
             onClick: async () => {
-              // 确认删除
-              dialog.warning({
-                title: '删除',
-                content: '确认删除吗？',
-                positiveText: '确定',
-                negativeText: '取消',
-                onPositiveClick: async () => {
-                  await deleteProject({ _id: record._id });
-                  actionRef.value.reload();
-                },
-              });
+              await confirmDelete();
+              await deleteProject({ _id: record._id });
+              actionRef.value.reload();
             },
           },
         ],

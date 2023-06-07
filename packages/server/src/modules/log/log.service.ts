@@ -66,12 +66,14 @@ export class LogService {
 
     return log
   }
+  async delete(id: string) {
+    await this.crawlerRunLog.findByIdAndDelete(id)
+  }
   async findOneById(id: string) {
     return await this.crawlerRunLog.findById(id)
   }
   async count(userid: string) {
     const totalCount = await this.crawlerRunLog.countDocuments({})
-    console.log(totalCount, userid)
     return {
       totalCount: await this.crawlerRunLog.countDocuments({ owner: userid }),
       lastDayCount: await this.crawlerRunLog.countDocuments({

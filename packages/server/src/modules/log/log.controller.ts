@@ -53,8 +53,19 @@ export class LogController {
   async notify(@Body() body: any) {
     const _id = body._id
     const result = body.result
-    console.log('notify', _id, result)
     await this.logService.notify(_id, result)
+    return {
+      data: null,
+    }
+  }
+  @Post('delete')
+  async delete(@Body() body: any, @Req() req: Request) {
+    const userid = req['user']._id
+    const log = await this.logService.findOneById(body._id)
+    if (log.owner.toString() !== userid.toString()) {
+      throw new HttpException('没有权限', 403)
+    }
+    await this.logService.delete(body._id)
     return {
       data: null,
     }

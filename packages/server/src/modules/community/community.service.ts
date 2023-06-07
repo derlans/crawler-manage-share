@@ -185,7 +185,6 @@ export class CommunityService {
       project: projectid,
       user: userid,
     })
-    console.log(isLike, projectid, userid)
     if (isLike) return
     await this.likeProjectModel.create({
       project: projectid,

@@ -45,12 +45,13 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { columns } from './columns';
-  import { getCrawlerList } from '@/api/crawler';
+  import { getCrawlerList, deleteCrawler } from '@/api/crawler';
   import { createLog } from '@/api/log';
   import { useRouter } from 'vue-router';
   import { FormSchema, useForm } from '@/components/Form';
   import { isCron } from '@crawler-manage-share/utils';
   import { createCron } from '@/api/cron';
+  import { confirmDelete } from '@/utils/operate';
   const router = useRouter();
   // const message = useMessage();
   const actionRef = ref();
@@ -77,8 +78,11 @@
             label: '删除',
             type: 'warning',
             style: 'margin-right: 10px;',
-            onClick: () => {
-              // window['$message'].info(`您点击了，${record.name} 按钮`);
+            onClick: async () => {
+              // 提示有管理定时任务的时候不能删除
+              await confirmDelete();
+              window['$message'].error('请先删除关联定时任务');
+              // await deleteCrawler({ _id: record._id });
             },
           },
           {

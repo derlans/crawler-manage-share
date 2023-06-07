@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, Request } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  Post,
+  Req,
+  Request,
+} from '@nestjs/common'
 import { CrawlerService } from './crawler.service'
 @Controller('crawler')
 export class CrawlerController {
@@ -27,5 +35,15 @@ export class CrawlerController {
     return {
       data: await this.crawlerService.testRun(body),
     }
+  }
+  @Post('delete')
+  async delete(@Body() body: any, @Req() req: Request) {
+    const userid = req['user']._id
+    const _id = body._id
+    const crawler = await this.crawlerService.findOneById(_id)
+    if (crawler.owner.toString() !== userid.toString()) {
+      throw new HttpException('没有权限', 403)
+    }
+    await this.crawlerService.deleteOneById(_id)
   }
 }

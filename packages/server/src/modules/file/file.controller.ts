@@ -16,6 +16,7 @@ export class FileController {
   @Get('data/:fileName')
   readData(@Param('fileName') fileName: string, @Res() res: Response): void {
     const fileContent = this.fileService.readFile(fileName + '.json')
+    console.log(fileName)
     const json = JSON.parse(fileContent)
     const data = json.map((item) => {
       return item.data

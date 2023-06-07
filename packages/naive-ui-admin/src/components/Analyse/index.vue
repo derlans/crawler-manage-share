@@ -48,7 +48,7 @@
     fileurl: string;
   }>();
   const iframeUrl = computed(() => {
-    return `http://json.derlan.top/editor?url=${props.fileurl}`;
+    return `http://127.0.0.1:5500/editor.html?url=${props.fileurl}`;
   });
   const analyseResult = computed(() => {
     return jsonUtils.analyseJson(props.value);

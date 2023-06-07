@@ -31,3 +31,11 @@ export function testRunCrawler(params) {
     params,
   });
 }
+
+export function deleteCrawler(params) {
+  return http.request({
+    url: '/crawler/delete',
+    method: 'POST',
+    params,
+  });
+}

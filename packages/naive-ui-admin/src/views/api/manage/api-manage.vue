@@ -177,14 +177,6 @@
         style: 'button',
         actions: [
           {
-            label: '删除',
-            onClick: handleDelete.bind(null, record),
-          },
-          {
-            label: '编辑',
-            onClick: handleEdit.bind(null, record),
-          },
-          {
             label: '详情',
             onClick: () => router.push({ name: 'api-detail', params: { id: record._id } }),
           },
@@ -241,16 +233,6 @@
       }
       formBtnLoading.value = false;
     });
-  }
-
-  function handleEdit(record: Recordable) {
-    console.log('点击了编辑', record);
-    router.push({ name: 'basic-info', params: { id: record.id } });
-  }
-
-  function handleDelete(record: Recordable) {
-    console.log('点击了删除', record);
-    window['$message'].info('点击了删除');
   }
 
   function handleSubmit() {

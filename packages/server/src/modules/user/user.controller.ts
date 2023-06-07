@@ -24,7 +24,6 @@ export class UserController {
   @Post('menu')
   async menu(@Body() data) {
     const list = await this.userService.getMenu()
-    console.log(list)
     return {
       data: list,
     }

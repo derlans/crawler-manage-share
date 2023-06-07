@@ -18,7 +18,7 @@ export const columns = [
   {
     title: '总耗时(s)',
     key: 'totalTime',
-    width: 100,
+    width: 60,
     render(row: any) {
       return (new Date(row.endTime).getTime() - new Date(row.createdAt).getTime()) / 1000;
     },
@@ -26,7 +26,7 @@ export const columns = [
   {
     title: '状态',
     key: 'status',
-    width: 100,
+    width: 60,
     render(row: any) {
       if (row.status === 1) {
         return h(NTag, { type: 'info' }, () => '运行中');
@@ -43,22 +43,22 @@ export const columns = [
   {
     title: '结果数',
     key: 'resultCount',
-    width: 100,
+    width: 50,
   },
   {
     title: '成功数',
     key: 'successCount',
-    width: 100,
+    width: 50,
   },
   {
     title: '失败数',
     key: 'failCount',
-    width: 100,
+    width: 50,
   },
   {
     title: '结果大小',
     key: 'resultSize',
-    width: 100,
+    width: 50,
     render(row: any) {
       return `${(row.resultSize / 1024).toFixed(2)}kb`;
     },

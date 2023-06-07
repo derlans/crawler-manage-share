@@ -18,12 +18,9 @@ export const isCron = (str: string): boolean => {
   if (!str) return false
   try {
     const interval = parser.parseExpression(str)
-    console.log('interval', interval)
     const nextDate = interval.next().toDate()
-    console.log('nextDate', nextDate)
     return true
   } catch (err) {
-    console.log('err', err)
     return false
   }
 }

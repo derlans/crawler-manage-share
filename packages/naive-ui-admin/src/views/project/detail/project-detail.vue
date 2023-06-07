@@ -90,6 +90,7 @@
   import crawlerEdit from '@/views/crawler/crawler-edit.vue';
   import crawlerRun from '@/views/crawler/crawler-run.vue';
   import { useDialog } from 'naive-ui';
+  import { confirmDelete } from '@/utils/operate';
   const router = useRouter();
   const { id } = router.currentRoute.value.params;
   const projectId = (Array.isArray(id) ? id[0] : id) as string;
@@ -120,20 +121,12 @@
           {
             label: '删除',
             onClick: async () => {
-              // 确认删除
-              dialog.warning({
-                title: '删除',
-                content: '确认删除吗？',
-                positiveText: '确定',
-                negativeText: '取消',
-                onPositiveClick: async () => {
-                  const filterList = projectDetail.value.crawlerList.filter(
-                    (item) => item.name !== record.name
-                  );
-                  await updateCrawlerList(filterList);
-                  actionRef.value.reload();
-                },
-              });
+              await confirmDelete();
+              const filterList = projectDetail.value.crawlerList.filter(
+                (item) => item.name !== record.name
+              );
+              await updateCrawlerList(filterList);
+              actionRef.value.reload();
             },
           },
           {

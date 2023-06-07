@@ -23,6 +23,9 @@ export class CrawlerService {
       'description',
     ])
   }
+  async deleteOneById(id: string) {
+    return await this.crawlerRunModel.findByIdAndDelete(id)
+  }
   async createCrawler(v: any, userid: string) {
     return await this.crawlerRunModel.create({ ...v, owner: userid })
   }
@@ -42,11 +45,15 @@ export class CrawlerService {
   }
   async runPythonCrawler(logid: string, crawlerRun: CrawlerRunDoc) {
     const { crawler: crawlerSchema, runOptions } = crawlerRun
-    const res = await axios.post(pythonServePath.execute, {
-      code: crawlerSchema.code,
-      ...runOptions,
-      _id: logid,
-    })
+    const res = await axios
+      .post(pythonServePath.execute, {
+        code: crawlerSchema.code,
+        ...runOptions,
+        _id: logid,
+      })
+      .catch((e) => {
+        return e
+      })
     return res.data
   }
   async count(userid: string) {

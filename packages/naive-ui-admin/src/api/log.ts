@@ -35,3 +35,11 @@ export function getJsonFile(fileName) {
     }
   );
 }
+
+export function deleteLog(params) {
+  return http.request({
+    url: '/log/delete',
+    method: 'POST',
+    params,
+  });
+}

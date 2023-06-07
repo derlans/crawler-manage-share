@@ -48,11 +48,12 @@
   import { h, reactive, ref } from 'vue';
   import { BasicTable, TableAction } from '@/components/Table';
   import { columns } from './columns';
-  import { getLogList, getJsonFile } from '@/api/log';
+  import { getLogList, getJsonFile, deleteLog } from '@/api/log';
   import { saveJsonFile } from '@/utils/save';
   import { FormSchema, useForm } from '@/components/Form';
   import { useRoute } from 'vue-router';
   import Analyse from '@/components/Analyse/index.vue';
+  import { confirmDelete } from '@/utils/operate';
   const route = useRoute();
   const cronid = route.query.cronid;
   const actionRef = ref();
@@ -76,6 +77,8 @@
         actions: [
           {
             label: '数据窥探',
+            type: 'primary',
+            style: 'margin-right:10px',
             onClick: async () => {
               const res = await getJsonFile(record._id);
               const data = res.data.map((item) => {
@@ -84,13 +87,15 @@
               analyseData.value = {
                 name: record.name,
                 value: data,
-                fileurl: `http://localhost:3000/api/file/data/${record._id}`,
+                fileurl: `http://127.0.0.1:3000/api/file/data/${record._id}`,
               };
               showAnalyseModal.value = true;
             },
           },
           {
             label: '导出日志',
+            type: 'warning',
+            style: 'margin-right:10px',
             onClick: async () => {
               const res = await getJsonFile(record._id);
               const data = res.data;
@@ -99,6 +104,8 @@
           },
           {
             label: '导出数据',
+            type: 'success',
+            style: 'margin-right:10px',
             onClick: async () => {
               const res = await getJsonFile(record._id);
               const data = res.data.map((item) => {
@@ -107,20 +114,15 @@
               saveJsonFile(data, record.name + '-data');
             },
           },
-          // {
-          //   label: '导出成功数据',
-          //   onClick: async () => {
-          //     const res = await getJsonFile(record._id);
-          //     const data = res.data
-          //       .filter((item) => {
-          //         return item.isSuccess;
-          //       })
-          //       .map((item) => {
-          //         return item.data;
-          //       });
-          //     saveJsonFile(data, record.name + '-success');
-          //   },
-          // },
+          {
+            label: '删除',
+            type: 'error',
+            onClick: async () => {
+              await confirmDelete();
+              await deleteLog({ _id: record._id });
+              actionRef.value?.reload();
+            },
+          },
         ],
       });
     },
